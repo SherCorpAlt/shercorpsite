@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef } from "react"
+import React, { useRef } from "react"
 import { motion, useInView } from "framer-motion"
 import Image from "next/image"
 import { ArrowUpRight, Code, Layout, Smartphone } from "lucide-react"
@@ -55,7 +55,17 @@ export function WebsiteCaseStudies() {
     )
 }
 
-function CaseStudyItem({ project, index }: { project: any, index: number }) {
+interface Project {
+    title: string;
+    category: string;
+    description: string;
+    icon: React.ElementType;
+    image: string;
+    stats: string[];
+    color: string;
+}
+
+function CaseStudyItem({ project, index }: { project: Project, index: number }) {
     const ref = useRef(null)
     const isInView = useInView(ref, { once: true, margin: "-100px" })
     const isEven = index % 2 === 0

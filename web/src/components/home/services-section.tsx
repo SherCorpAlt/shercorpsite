@@ -1,8 +1,8 @@
 "use client"
 
-import { useRef, useEffect, useState } from "react"
-import { motion, useScroll, useTransform, useInView } from "framer-motion"
-import { Palette, Smartphone, Video, Megaphone, Users, Search, Cpu, LayoutGrid, ArrowUpRight } from "lucide-react"
+import React, { useRef } from "react"
+import { motion, useScroll, useTransform } from "framer-motion"
+import { Palette, Video, Megaphone, Search, Cpu, LayoutGrid, ArrowUpRight } from "lucide-react"
 
 import Image from "next/image"
 import Link from "next/link"
@@ -33,7 +33,17 @@ export function ServicesSection() {
     )
 }
 
-function CardStackItem({ service, index, total }: { service: any, index: number, total: number }) {
+interface ServiceItem {
+    icon: React.ElementType;
+    title: string;
+    description: string;
+    color: string;
+    image: string;
+    containerClass?: string;
+    className?: string;
+}
+
+function CardStackItem({ service, index }: { service: ServiceItem, index: number, total: number }) {
     const ref = useRef(null)
     const { scrollYProgress } = useScroll({
         target: ref,

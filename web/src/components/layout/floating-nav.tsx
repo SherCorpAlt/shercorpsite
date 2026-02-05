@@ -104,7 +104,7 @@ export function FloatingNav() {
 
                 <Link href="/contact" className="ml-2">
                     <button className="bg-white text-black text-sm font-semibold px-4 py-2 rounded-full hover:scale-105 transition-transform">
-                        Let's Talk
+                        Let&apos;s Talk
                     </button>
                 </Link>
             </div>

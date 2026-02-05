@@ -1,0 +1,31 @@
+﻿
+> web@0.1.0 lint
+> eslint
+
+
+D:\SherCorp\KhawarSher Website\web\src\app\portfolio\park-view-islamabad\page.tsx
+  6:10  warning  'BedDouble' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\SherCorp\KhawarSher Website\web\src\app\portfolio\rahmanenclave\page.tsx
+  118:65  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  118:79  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+
+D:\SherCorp\KhawarSher Website\web\src\app\services\page.tsx
+  3:14  warning  'Smartphone' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\SherCorp\KhawarSher Website\web\src\components\casestudies\social-media-case-studies.tsx
+  5:10  warning  'Instagram' is defined but never used  @typescript-eslint/no-unused-vars
+  5:31  warning  'Twitter' is defined but never used    @typescript-eslint/no-unused-vars
+
+D:\SherCorp\KhawarSher Website\web\src\components\casestudies\website-case-studies.tsx
+  58:55  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\SherCorp\KhawarSher Website\web\src\components\home\gem-demo.tsx
+   4:18  warning  'AnimatePresence' is defined but never used                      @typescript-eslint/no-unused-vars
+  58:24  error    `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+
+D:\SherCorp\KhawarSher Website\web\src\components\home\services-section.tsx
+  37:11  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+Ô£û 10 problems (5 errors, 5 warnings)
+

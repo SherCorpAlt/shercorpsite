@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { motion, AnimatePresence } from "framer-motion"
+import { motion } from "framer-motion"
 import { Bot, User, Sparkles } from "lucide-react"
 
 const DEMO_SCRIPTS = [
@@ -55,7 +55,7 @@ export function GemDemo() {
                     <span>Generative Engine Marketing (GEM)</span>
                 </div>
                 <h2 className="text-5xl md:text-7xl font-bold tracking-tighter text-white mb-4">
-                    Don't just Rank.<br />Be the <span className="text-neon-green">Answer</span>.
+                    Don&apos;t just Rank.<br />Be the <span className="text-neon-green">Answer</span>.
                 </h2>
                 <p className="text-muted-foreground text-lg max-w-xl mx-auto">
                     Traditional SEO is dying. We engineer your brand to be the citation of choice for ChatGPT, Gemini, and Claude.

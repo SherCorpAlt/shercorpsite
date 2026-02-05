@@ -115,7 +115,7 @@ export default function RahmanEnclavePage() {
                         </CardHeader>
                         <CardContent>
                             <p className="text-muted-foreground text-sm">
-                                A spacious central mosque named "Naseem Masjid", fully operational for daily and Friday prayers.
+                                A spacious central mosque named &quot;Naseem Masjid&quot;, fully operational for daily and Friday prayers.
                             </p>
                         </CardContent>
                     </Card>

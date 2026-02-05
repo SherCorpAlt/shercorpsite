@@ -14,9 +14,12 @@ export function HeroSection() {
 
     // 3D Portal Effect transforms
     // 3D Portal Effect transforms
+    // 3D Portal Effect transforms
     const scale = useTransform(scrollYProgress, [0, 1], [1, 15])
     const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0])
-    const zTrace = useTransform(scrollYProgress, [0, 1], [0, 1000])
+
+    const boxScale = useTransform(scrollYProgress, [0, 1], [0.8, 2])
+    const boxOpacity = useTransform(scrollYProgress, [0, 0.6], [0.6, 0])
 
     return (
         <section ref={containerRef} className="relative h-[120vh] w-full bg-black">
@@ -72,8 +75,8 @@ export function HeroSection() {
                                 x: item.x,
                                 y: item.y,
                                 rotate: item.rotate,
-                                scale: useTransform(scrollYProgress, [0, 1], [0.8, 2]),
-                                opacity: useTransform(scrollYProgress, [0, 0.6], [0.6, 0])
+                                scale: boxScale,
+                                opacity: boxOpacity
                             }}
                             className="absolute w-[200px] h-[300px] rounded-xl overflow-hidden glass-card border border-white/5 opacity-60 grayscale hover:grayscale-0 hover:!opacity-100 transition-all duration-500 pointer-events-auto z-10"
                         >
