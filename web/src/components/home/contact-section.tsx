@@ -10,7 +10,7 @@ export function ContactSection() {
         <section className="py-24 relative overflow-hidden" id="contact">
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-neon-green/20 blur-[120px] rounded-full pointer-events-none -z-10" />
 
-            <div className="container mx-auto px-4 max-w-xl">
+            <div className="mx-auto px-4 w-[90%] md:w-[40%]">
                 <div className="text-center mb-12 space-y-4">
                     <h2 className="text-4xl md:text-5xl font-bold tracking-tighter">Get in Touch</h2>
                     <p className="text-muted-foreground text-lg">

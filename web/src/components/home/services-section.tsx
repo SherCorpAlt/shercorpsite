@@ -5,14 +5,15 @@ import { motion, useScroll, useTransform, useInView } from "framer-motion"
 import { Palette, Smartphone, Video, Megaphone, Users, Search, Cpu, LayoutGrid, ArrowUpRight } from "lucide-react"
 
 import Image from "next/image"
+import Link from "next/link"
 
 const services = [
     { icon: Search, title: "SEO, SEM & GEM", description: "Dominating Google & AI Chatbots alike.", color: "bg-blue-500", image: "/images/seo-sem-gem.jpg" },
     { icon: Cpu, title: "AI Solutions", description: "Custom Agents & Neural Workflows.", color: "bg-purple-500", image: "/images/ai-solutions.jpg" },
-    { icon: Palette, title: "Premium Design", description: "Visual identity that speaks volumes.", color: "bg-pink-500" },
-    { icon: LayoutGrid, title: "UI/UX Architecture", description: "Conversion-centric interfaces.", color: "bg-orange-500" },
-    { icon: Video, title: "AV Production", description: "Cinematic storytelling.", color: "bg-red-500" },
-    { icon: Megaphone, title: "Social Strategies", description: "Building digital movements.", color: "bg-green-500" },
+    { icon: Palette, title: "Premium Design", description: "Visual identity that speaks volumes.", color: "bg-pink-500", image: "/images/premium-design.jpg" },
+    { icon: LayoutGrid, title: "UI/UX Architecture", description: "Conversion-centric interfaces.", color: "bg-orange-500", image: "/images/ui-ux-architecture.jpg" },
+    { icon: Video, title: "AV Production", description: "Cinematic storytelling.", color: "bg-red-500", image: "/images/AV.jpg" },
+    { icon: Megaphone, title: "Social Strategies", description: "Building digital movements.", color: "bg-green-500", image: "/images/SMM.jpg" },
 ]
 
 export function ServicesSection() {
@@ -86,18 +87,18 @@ function CardStackItem({ service, index, total }: { service: any, index: number,
                                 Performance Analysis
                             </li>
                         </ul>
-                        <button className="flex items-center gap-2 text-neon-green font-bold uppercase tracking-wider text-sm hover:gap-4 transition-all">
+                        <Link href="/casestudies" className="flex items-center gap-2 text-neon-green font-bold uppercase tracking-wider text-sm hover:gap-4 transition-all">
                             View Case Studies <ArrowUpRight className="w-4 h-4" />
-                        </button>
+                        </Link>
                     </div>
 
-                    <div className="h-[300px] md:h-full min-h-[400px] rounded-3xl bg-black/40 border border-white/5 backdrop-blur-md relative overflow-hidden group-hover:scale-[1.02] transition-transform duration-700">
+                    <div className={`rounded-3xl bg-black/40 border border-white/5 backdrop-blur-md relative overflow-hidden group-hover:scale-[1.02] transition-transform duration-700 ${service.containerClass || "h-[300px] md:h-full min-h-[400px]"}`}>
                         {service.image ? (
                             <Image
                                 src={service.image}
                                 alt={service.title}
                                 fill
-                                className="object-cover"
+                                className={service.className || "object-cover"}
                             />
                         ) : (
                             <div className="absolute inset-0 flex items-center justify-center">

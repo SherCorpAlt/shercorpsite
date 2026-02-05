@@ -29,7 +29,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${inter.variable} font-sans antialiased min-h-screen flex flex-col bg-black selection:bg-neon-green/30 selection:text-neon-green`}
+        className={`${inter.variable} font-sans antialiased min-h-screen flex flex-col bg-background text-foreground selection:bg-neon-green/30 selection:text-neon-green`}
       >
         <ThemeProvider
           attribute="class"
