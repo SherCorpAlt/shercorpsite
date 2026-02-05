@@ -44,7 +44,7 @@ export function Navbar() {
                 <Link href="/" className="flex items-center gap-2 font-bold text-xl tracking-tighter">
                     <span className="bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">SherCorp</span>
                 </Link>
-                <nav className="hidden md:flex gap-6 items-center">
+                <nav className="hidden min-[500px]:flex gap-6 items-center">
                     {navItems.map((item) => {
                         const isActive = pathname === item.href || (item.children && item.children.some(child => pathname === child.href))
 
@@ -103,7 +103,7 @@ export function Navbar() {
                     <ModeToggle />
                     {/* Mobile Menu Toggle */}
                     <button
-                        className="md:hidden p-2 text-muted-foreground hover:text-foreground transition-colors"
+                        className="min-[500px]:hidden p-2 text-muted-foreground hover:text-foreground transition-colors"
                         onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                         aria-label="Toggle menu"
                     >
@@ -118,7 +118,7 @@ export function Navbar() {
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: "auto" }}
                     exit={{ opacity: 0, height: 0 }}
-                    className="md:hidden border-b border-white/10 bg-background/95 backdrop-blur-md overflow-hidden"
+                    className="min-[500px]:hidden border-b border-white/10 bg-background/95 backdrop-blur-md overflow-hidden"
                 >
                     <div className="container py-6 flex flex-col gap-6 px-6">
                         {navItems.map((item) => {
