@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { ModeToggle } from "@/components/mode-toggle"
 import { motion } from "framer-motion"
-import { ChevronDown } from "lucide-react"
+import { ChevronDown, Menu, X } from "lucide-react"
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -19,6 +19,7 @@ import {
 
 export function Navbar() {
     const pathname = usePathname()
+    const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false)
 
     // Expanded navItems with hierarchy
     const navItems = [
@@ -100,8 +101,77 @@ export function Navbar() {
                 </nav>
                 <div className="flex items-center gap-4">
                     <ModeToggle />
+                    {/* Mobile Menu Toggle */}
+                    <button
+                        className="md:hidden p-2 text-muted-foreground hover:text-foreground transition-colors"
+                        onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                        aria-label="Toggle menu"
+                    >
+                        {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+                    </button>
                 </div>
             </div>
+
+            {/* Mobile Menu */}
+            {mobileMenuOpen && (
+                <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className="md:hidden border-b border-white/10 bg-background/95 backdrop-blur-md overflow-hidden"
+                >
+                    <div className="container py-6 flex flex-col gap-6 px-6">
+                        {navItems.map((item) => {
+                            const isActive = pathname === item.href || (item.children && item.children.some(child => pathname === child.href))
+
+                            if (item.children) {
+                                return (
+                                    <div key={item.name} className="flex flex-col gap-3">
+                                        <div className={cn(
+                                            "text-lg font-semibold",
+                                            isActive ? "text-foreground" : "text-muted-foreground"
+                                        )}>
+                                            {item.name}
+                                        </div>
+                                        <div className="pl-4 flex flex-col gap-3 border-l-2 border-white/10 ml-1">
+                                            {item.children.map((child) => {
+                                                const isChildActive = pathname === child.href
+                                                return (
+                                                    <Link
+                                                        key={child.href}
+                                                        href={child.href}
+                                                        className={cn(
+                                                            "text-sm font-medium transition-colors hover:text-primary",
+                                                            isChildActive ? "text-foreground" : "text-muted-foreground"
+                                                        )}
+                                                        onClick={() => setMobileMenuOpen(false)}
+                                                    >
+                                                        {child.name}
+                                                    </Link>
+                                                )
+                                            })}
+                                        </div>
+                                    </div>
+                                )
+                            }
+
+                            return (
+                                <Link
+                                    key={item.href}
+                                    href={item.href}
+                                    className={cn(
+                                        "text-lg font-semibold transition-colors hover:text-primary",
+                                        isActive ? "text-foreground" : "text-muted-foreground"
+                                    )}
+                                    onClick={() => setMobileMenuOpen(false)}
+                                >
+                                    {item.name}
+                                </Link>
+                            )
+                        })}
+                    </div>
+                </motion.div>
+            )}
         </header>
     )
 }
