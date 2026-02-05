@@ -7,6 +7,7 @@ import { ContactSection } from "@/components/home/contact-section";
 import { GemDemo } from "@/components/home/gem-demo";
 
 export default function Home() {
+  console.log("Rendering Home Page during build");
   return (
     <div className="flex flex-col gap-0 w-full overflow-hidden">
       <HeroSection />
