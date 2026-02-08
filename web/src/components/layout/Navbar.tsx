@@ -42,7 +42,7 @@ export function Navbar() {
         <header className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[90%] md:w-auto max-w-5xl">
             <div className="flex items-center justify-between gap-1 p-1 rounded-full border border-white/10 bg-black/50 backdrop-blur-xl shadow-2xl pl-6 pr-2 py-2">
                 <Link href="/" className="mr-4 shrink-0">
-                    <Image src="/images/shercorp-logo-white.png" alt="SherCorp" width={150} height={35} className="h-8 md:h-[50px] w-auto" />
+                    <Image src="/images/shercorp-logo-white.png" alt="SherCorp" width={150} height={35} className="h-6 md:h-[35px] w-auto" />
                 </Link>
 
                 <nav className="hidden md:flex items-center gap-1">
