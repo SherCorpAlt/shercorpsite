@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
-import { FloatingNav } from "@/components/layout/floating-nav";
+import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { ParticleBackground } from "@/components/ui/particle-background";
 import { FluidCursor } from "@/components/ui/fluid-cursor";
@@ -38,7 +38,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <FluidCursor />
-          <FloatingNav />
+          <Navbar />
 
           {/* Main Content Wrapper - needs background to cover footer */}
           <div className="relative z-10 bg-background shadow-2xl mb-[50vh] rounded-b-[3rem] overflow-hidden">

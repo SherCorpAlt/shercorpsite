@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { ModeToggle } from "@/components/mode-toggle"
@@ -35,16 +36,16 @@ export function Navbar() {
             ]
         },
         { name: "About Us", href: "/about" },
-        { name: "Contact", href: "/contact" },
     ]
 
     return (
-        <header className="sticky top-0 z-50 w-full border-b border-white/10 bg-background/5 backdrop-blur-md supports-[backdrop-filter]:bg-background/5">
-            <div className="container flex h-16 items-center justify-between px-4 md:px-6">
-                <Link href="/" className="flex items-center gap-2 font-bold text-xl tracking-tighter">
-                    <span className="bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">SherCorp</span>
+        <header className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[90%] md:w-auto max-w-5xl">
+            <div className="flex items-center justify-between gap-1 p-1 rounded-full border border-white/10 bg-black/50 backdrop-blur-xl shadow-2xl pl-6 pr-2 py-2">
+                <Link href="/" className="mr-4 shrink-0">
+                    <Image src="/images/shercorp-logo-white.png" alt="SherCorp" width={150} height={35} className="h-8 md:h-[50px] w-auto" />
                 </Link>
-                <nav className="hidden min-[500px]:flex gap-6 items-center">
+
+                <nav className="hidden md:flex items-center gap-1">
                     {navItems.map((item) => {
                         const isActive = pathname === item.href || (item.children && item.children.some(child => pathname === child.href))
 
@@ -52,23 +53,23 @@ export function Navbar() {
                             return (
                                 <DropdownMenu key={item.name}>
                                     <DropdownMenuTrigger className={cn(
-                                        "relative flex items-center gap-1 text-sm font-medium transition-colors hover:text-primary outline-none",
-                                        isActive ? "text-foreground" : "text-muted-foreground"
+                                        "relative px-4 py-2 text-sm font-medium transition-colors hover:text-white rounded-full flex items-center gap-1 outline-none whitespace-nowrap",
+                                        isActive ? "text-black" : "text-muted-foreground"
                                     )}>
-                                        {item.name}
-                                        <ChevronDown className="h-4 w-4" />
                                         {isActive && (
                                             <motion.div
-                                                layoutId="navbar-indicator"
-                                                className="absolute -bottom-[21px] left-0 right-0 h-[2px] bg-neon-green"
-                                                transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                                                layoutId="nav-pill"
+                                                className="absolute inset-0 bg-neon-green rounded-full -z-10"
+                                                transition={{ type: "spring", stiffness: 300, damping: 30 }}
                                             />
                                         )}
+                                        {item.name}
+                                        <ChevronDown className="h-3 w-3" />
                                     </DropdownMenuTrigger>
-                                    <DropdownMenuContent align="start">
+                                    <DropdownMenuContent align="center" className="bg-black/80 backdrop-blur-xl border-white/10 text-white min-w-[200px]">
                                         {item.children.map((child) => (
-                                            <DropdownMenuItem key={child.href} asChild>
-                                                <Link href={child.href} className="w-full cursor-pointer">
+                                            <DropdownMenuItem key={child.href} asChild className="focus:bg-white/10 focus:text-white cursor-pointer">
+                                                <Link href={child.href}>
                                                     {child.name}
                                                 </Link>
                                             </DropdownMenuItem>
@@ -83,73 +84,80 @@ export function Navbar() {
                                 key={item.href}
                                 href={item.href}
                                 className={cn(
-                                    "relative text-sm font-medium transition-colors hover:text-primary",
-                                    isActive ? "text-foreground" : "text-muted-foreground"
+                                    "relative px-4 py-2 text-sm font-medium transition-colors hover:text-white rounded-full whitespace-nowrap",
+                                    isActive ? "text-black" : "text-muted-foreground"
                                 )}
                             >
-                                {item.name}
                                 {isActive && (
                                     <motion.div
-                                        layoutId="navbar-indicator"
-                                        className="absolute -bottom-[21px] left-0 right-0 h-[2px] bg-neon-green"
-                                        transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                                        layoutId="nav-pill"
+                                        className="absolute inset-0 bg-neon-green rounded-full -z-10"
+                                        transition={{ type: "spring", stiffness: 300, damping: 30 }}
                                     />
                                 )}
+                                {item.name}
                             </Link>
                         )
                     })}
                 </nav>
-                <div className="flex items-center gap-4">
-                    <ModeToggle />
-                    {/* Mobile Menu Toggle */}
-                    <button
-                        className="min-[500px]:hidden p-2 text-muted-foreground hover:text-foreground transition-colors"
-                        onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                        aria-label="Toggle menu"
-                    >
-                        {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-                    </button>
+
+                <div className="flex items-center gap-2 pl-2 md:border-l border-white/10 ml-2">
+                    <div className="hidden md:block">
+                        <ModeToggle />
+                    </div>
+
+                    <Link href="/contact" className="hidden md:block ml-2">
+                        <button className="bg-white text-black text-sm font-semibold px-4 py-2 rounded-full hover:scale-105 transition-transform whitespace-nowrap">
+                            Contact Khawar
+                        </button>
+                    </Link>
+
+                    {/* Mobile Actions */}
+                    <div className="md:hidden flex items-center gap-2">
+                        <ModeToggle />
+                        <button
+                            className="p-2 text-muted-foreground hover:text-foreground transition-colors"
+                            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                            aria-label="Toggle menu"
+                        >
+                            {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+                        </button>
+                    </div>
                 </div>
             </div>
 
             {/* Mobile Menu */}
             {mobileMenuOpen && (
                 <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    exit={{ opacity: 0, height: 0 }}
-                    className="min-[500px]:hidden border-b border-white/10 bg-background/95 backdrop-blur-md overflow-hidden"
+                    initial={{ opacity: 0, y: -20, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -20, scale: 0.95 }}
+                    className="md:hidden mt-2 border border-white/10 bg-black/90 backdrop-blur-xl rounded-3xl overflow-hidden p-4"
                 >
-                    <div className="container py-6 flex flex-col gap-6 px-6">
+                    <div className="flex flex-col gap-4">
                         {navItems.map((item) => {
                             const isActive = pathname === item.href || (item.children && item.children.some(child => pathname === child.href))
 
                             if (item.children) {
                                 return (
-                                    <div key={item.name} className="flex flex-col gap-3">
+                                    <div key={item.name} className="flex flex-col gap-2">
                                         <div className={cn(
-                                            "text-lg font-semibold",
-                                            isActive ? "text-foreground" : "text-muted-foreground"
+                                            "text-lg font-semibold px-2",
+                                            isActive ? "text-white" : "text-muted-foreground"
                                         )}>
                                             {item.name}
                                         </div>
-                                        <div className="pl-4 flex flex-col gap-3 border-l-2 border-white/10 ml-1">
-                                            {item.children.map((child) => {
-                                                const isChildActive = pathname === child.href
-                                                return (
-                                                    <Link
-                                                        key={child.href}
-                                                        href={child.href}
-                                                        className={cn(
-                                                            "text-sm font-medium transition-colors hover:text-primary",
-                                                            isChildActive ? "text-foreground" : "text-muted-foreground"
-                                                        )}
-                                                        onClick={() => setMobileMenuOpen(false)}
-                                                    >
-                                                        {child.name}
-                                                    </Link>
-                                                )
-                                            })}
+                                        <div className="pl-4 flex flex-col gap-2 border-l-2 border-white/10 ml-2">
+                                            {item.children.map((child) => (
+                                                <Link
+                                                    key={child.href}
+                                                    href={child.href}
+                                                    className="py-1 text-sm text-muted-foreground hover:text-white transition-colors"
+                                                    onClick={() => setMobileMenuOpen(false)}
+                                                >
+                                                    {child.name}
+                                                </Link>
+                                            ))}
                                         </div>
                                     </div>
                                 )
@@ -160,8 +168,8 @@ export function Navbar() {
                                     key={item.href}
                                     href={item.href}
                                     className={cn(
-                                        "text-lg font-semibold transition-colors hover:text-primary",
-                                        isActive ? "text-foreground" : "text-muted-foreground"
+                                        "text-lg font-semibold px-2 py-1 transition-colors hover:text-primary",
+                                        isActive ? "text-white" : "text-muted-foreground"
                                     )}
                                     onClick={() => setMobileMenuOpen(false)}
                                 >
@@ -169,6 +177,11 @@ export function Navbar() {
                                 </Link>
                             )
                         })}
+                        <Link href="/contact" onClick={() => setMobileMenuOpen(false)} className="mt-2">
+                            <button className="w-full bg-white text-black text-sm font-semibold px-4 py-3 rounded-xl hover:scale-105 transition-transform whitespace-nowrap">
+                                Contact Khawar
+                            </button>
+                        </Link>
                     </div>
                 </motion.div>
             )}
