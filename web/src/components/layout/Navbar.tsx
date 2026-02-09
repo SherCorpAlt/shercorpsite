@@ -6,14 +6,9 @@ import Image from "next/image"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { ModeToggle } from "@/components/mode-toggle"
-import { motion } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
 import { ChevronDown, Menu, X } from "lucide-react"
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+// DropdownMenu imports removed
 
 // navItems moved inside component or handled there
 
@@ -21,18 +16,26 @@ import {
 export function Navbar() {
     const pathname = usePathname()
     const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false)
+    const [hoveredItem, setHoveredItem] = React.useState<string | null>(null)
+
+    interface NavItem {
+        name: string;
+        href: string;
+        children?: { name: string; href: string }[];
+    }
 
     // Expanded navItems with hierarchy
-    const navItems = [
+    const navItems: NavItem[] = [
         { name: "Home", href: "/" },
         { name: "Services", href: "/services" },
         {
-            name: "Portfolio",
-            href: "/portfolio", // Placeholder, trigger for dropdown
+            name: "Case Studies",
+            href: "/casestudies",
             children: [
-                { name: "Park View Islamabad", href: "/portfolio/park-view-islamabad" },
                 { name: "Rahman Enclave", href: "/portfolio/rahmanenclave" },
-                { name: "Plots for Sale in Rahman Enclave", href: "/portfolio/rahmanenclave/plots-for-sale-in-rahman-enclave" },
+                { name: "LAAM (Octane)", href: "/laam-octane" },
+                { name: "LAAM Seller Central", href: "/laamsellercentral" },
+                { name: "Wavecomm", href: "/Wavecomm" },
             ]
         },
         { name: "About Us", href: "/about" },
@@ -51,11 +54,19 @@ export function Navbar() {
 
                         if (item.children) {
                             return (
-                                <DropdownMenu key={item.name}>
-                                    <DropdownMenuTrigger className={cn(
-                                        "relative px-4 py-2 text-sm font-medium transition-colors hover:text-white rounded-full flex items-center gap-1 outline-none whitespace-nowrap",
-                                        isActive ? "text-black" : "text-muted-foreground"
-                                    )}>
+                                <div
+                                    key={item.name}
+                                    className="relative"
+                                    onMouseEnter={() => setHoveredItem(item.name)}
+                                    onMouseLeave={() => setHoveredItem(null)}
+                                >
+                                    <Link
+                                        href={item.href}
+                                        className={cn(
+                                            "relative px-4 py-2 text-sm font-medium transition-colors hover:text-white rounded-full flex items-center gap-1 outline-none whitespace-nowrap",
+                                            isActive ? "text-black" : "text-muted-foreground"
+                                        )}
+                                    >
                                         {isActive && (
                                             <motion.div
                                                 layoutId="nav-pill"
@@ -65,17 +76,30 @@ export function Navbar() {
                                         )}
                                         {item.name}
                                         <ChevronDown className="h-3 w-3" />
-                                    </DropdownMenuTrigger>
-                                    <DropdownMenuContent align="center" className="bg-black/80 backdrop-blur-xl border-white/10 text-white min-w-[200px]">
-                                        {item.children.map((child) => (
-                                            <DropdownMenuItem key={child.href} asChild className="focus:bg-white/10 focus:text-white cursor-pointer">
-                                                <Link href={child.href}>
-                                                    {child.name}
-                                                </Link>
-                                            </DropdownMenuItem>
-                                        ))}
-                                    </DropdownMenuContent>
-                                </DropdownMenu>
+                                    </Link>
+
+                                    <AnimatePresence>
+                                        {hoveredItem === item.name && (
+                                            <motion.div
+                                                initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                                                animate={{ opacity: 1, y: 0, scale: 1 }}
+                                                exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                                                transition={{ duration: 0.2 }}
+                                                className="absolute top-full left-0 mt-2 min-w-[200px] bg-black/90 backdrop-blur-xl border border-white/10 rounded-xl overflow-hidden shadow-xl p-1 z-50"
+                                            >
+                                                {item.children.map((child) => (
+                                                    <Link
+                                                        key={child.href}
+                                                        href={child.href}
+                                                        className="block px-3 py-2 text-sm text-zinc-400 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
+                                                    >
+                                                        {child.name}
+                                                    </Link>
+                                                ))}
+                                            </motion.div>
+                                        )}
+                                    </AnimatePresence>
+                                </div>
                             )
                         }
 
@@ -141,12 +165,16 @@ export function Navbar() {
                             if (item.children) {
                                 return (
                                     <div key={item.name} className="flex flex-col gap-2">
-                                        <div className={cn(
-                                            "text-lg font-semibold px-2",
-                                            isActive ? "text-white" : "text-muted-foreground"
-                                        )}>
+                                        <Link
+                                            href={item.href}
+                                            className={cn(
+                                                "text-lg font-semibold px-2 block",
+                                                isActive ? "text-white" : "text-muted-foreground"
+                                            )}
+                                            onClick={() => setMobileMenuOpen(false)}
+                                        >
                                             {item.name}
-                                        </div>
+                                        </Link>
                                         <div className="pl-4 flex flex-col gap-2 border-l-2 border-white/10 ml-2">
                                             {item.children.map((child) => (
                                                 <Link

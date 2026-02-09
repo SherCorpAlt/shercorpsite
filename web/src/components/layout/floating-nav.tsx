@@ -4,29 +4,31 @@ import * as React from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { usePathname } from "next/navigation"
-import { motion } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
 import { cn } from "@/lib/utils"
 import { ModeToggle } from "@/components/mode-toggle"
 
 // ... imports ...
 import { ChevronDown } from "lucide-react"
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+// DropdownMenu imports removed
 
-const navItems = [
+interface NavItem {
+    name: string;
+    href: string;
+    children?: { name: string; href: string }[];
+}
+
+const navItems: NavItem[] = [
     { name: "Home", href: "/" },
     { name: "Services", href: "/services" },
     {
-        name: "Portfolio",
-        href: "/portfolio",
+        name: "Case Studies",
+        href: "/casestudies",
         children: [
-            { name: "Park View Islamabad", href: "/portfolio/park-view-islamabad" },
             { name: "Rahman Enclave", href: "/portfolio/rahmanenclave" },
-            { name: "Plots for Sale in Rahman Enclave", href: "/portfolio/rahmanenclave/plots-for-sale-in-rahman-enclave" },
+            { name: "LAAM (Octane)", href: "/laam-octane" },
+            { name: "LAAM Seller Central", href: "/laamsellercentral" },
+            { name: "Wavecomm", href: "/Wavecomm" },
         ]
     },
     { name: "About", href: "/about" },
@@ -34,6 +36,7 @@ const navItems = [
 
 export function FloatingNav() {
     const pathname = usePathname()
+    const [hoveredItem, setHoveredItem] = React.useState<string | null>(null)
 
     return (
         <nav className="fixed top-6 left-1/2 -translate-x-1/2 z-50">
@@ -48,11 +51,19 @@ export function FloatingNav() {
 
                         if (item.children) {
                             return (
-                                <DropdownMenu key={item.name}>
-                                    <DropdownMenuTrigger className={cn(
-                                        "relative px-4 py-2 text-sm font-medium transition-colors hover:text-white rounded-full flex items-center gap-1 outline-none",
-                                        isActive ? "text-black" : "text-muted-foreground"
-                                    )}>
+                                <div
+                                    key={item.name}
+                                    className="relative"
+                                    onMouseEnter={() => setHoveredItem(item.name)}
+                                    onMouseLeave={() => setHoveredItem(null)}
+                                >
+                                    <Link
+                                        href={item.href}
+                                        className={cn(
+                                            "relative px-4 py-2 text-sm font-medium transition-colors hover:text-white rounded-full flex items-center gap-1 outline-none",
+                                            isActive ? "text-black" : "text-muted-foreground"
+                                        )}
+                                    >
                                         {isActive && (
                                             <motion.div
                                                 layoutId="nav-pill"
@@ -62,17 +73,30 @@ export function FloatingNav() {
                                         )}
                                         {item.name}
                                         <ChevronDown className="h-3 w-3" />
-                                    </DropdownMenuTrigger>
-                                    <DropdownMenuContent align="center" className="bg-black/80 backdrop-blur-xl border-white/10 text-white min-w-[200px]">
-                                        {item.children.map((child) => (
-                                            <DropdownMenuItem key={child.href} asChild className="focus:bg-white/10 focus:text-white cursor-pointer">
-                                                <Link href={child.href}>
-                                                    {child.name}
-                                                </Link>
-                                            </DropdownMenuItem>
-                                        ))}
-                                    </DropdownMenuContent>
-                                </DropdownMenu>
+                                    </Link>
+
+                                    <AnimatePresence>
+                                        {hoveredItem === item.name && (
+                                            <motion.div
+                                                initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                                                animate={{ opacity: 1, y: 0, scale: 1 }}
+                                                exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                                                transition={{ duration: 0.2 }}
+                                                className="absolute top-full left-0 mt-2 min-w-[200px] bg-black/90 backdrop-blur-xl border border-white/10 rounded-xl overflow-hidden shadow-xl p-1 z-50"
+                                            >
+                                                {item.children.map((child) => (
+                                                    <Link
+                                                        key={child.href}
+                                                        href={child.href}
+                                                        className="block px-3 py-2 text-sm text-zinc-400 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
+                                                    >
+                                                        {child.name}
+                                                    </Link>
+                                                ))}
+                                            </motion.div>
+                                        )}
+                                    </AnimatePresence>
+                                </div>
                             )
                         }
 
