@@ -1,0 +1,202 @@
+---
+title: "Rahman Enclave — End-to-End Real Estate Marketing Case Study"
+client: "Rahman Enclave (Bin Abdur Rahman Pvt. Ltd.)"
+role: "Marketing Manager"
+company: "SherCorp"
+duration: "2016 – 2023"
+industry: "Real Estate"
+location: "Islamabad, Pakistan"
+---
+
+# Rahman Enclave  
+### End-to-End Brand, Marketing & Sales Execution  
+**A Flagship SherCorp Case Study**
+
+---
+
+## Project Overview
+
+**Rahman Enclave** is a CDA-approved gated residential community located on **Main Lehtrar Road, Islamabad**. Developed by **Bin Abdur Rahman (Pvt) Ltd.**, the project has emerged as one of the most trusted residential developments in Zone IV of Islamabad.
+
+SherCorp was engaged at an early stage of the project, where I served as **Marketing Manager for over seven years**. During this period, I led and executed the **entire creative, branding, digital marketing, and sales enablement ecosystem** — from initial brand identity creation to sustained revenue growth.
+
+**Result:**  
+The combined marketing and sales strategy contributed to **over PKR 2 Billion in realized real estate sales**.
+
+---
+
+## Hero Section
+
+**Recommended Image:**  
+`rahman-enclave-hero.jpg`
+
+> Developer Note:  
+> Use a wide, high-impact aerial or lifestyle image of Rahman Enclave.  
+> If multiple hero images exist, prioritize filenames already used on the legacy portfolio page.
+
+---
+
+## Project Context & Location Strategy
+
+Rahman Enclave is strategically located on **Main Lehtrar Road**, offering fast connectivity to Islamabad Expressway, Park Road, and major twin-city routes.
+
+### Key Location Advantages
+- Approx. **10 minutes drive** from Islamabad Expressway  
+- Dual access routes enhancing traffic flow  
+- Close proximity to Gulberg Greens, Ghori Town, and Park Road corridor  
+- Faster commute compared to other major housing schemes
+
+**Supporting Image:**  
+`rahman-enclave-location-map.jpg`
+
+---
+
+## Community Planning & Infrastructure
+
+Rahman Enclave was positioned as a **family-centric, fully developed gated community**, built in strict compliance with CDA planning standards.
+
+### Infrastructure Highlights
+- Fully **CDA-approved NOC**
+- Underground electricity, water supply, and sewerage
+- Secure gated access
+- Planned utility expansion including gas infrastructure
+
+---
+
+## Amenities & Lifestyle Features
+
+### Parks & Recreation
+- Two large **family parks**
+- Dedicated **sports complex**
+- Open-air and specialized fitness areas
+
+**Images:**
+- `rahman-enclave-family-park.jpg`
+- `rahman-enclave-sports-complex.jpg`
+
+---
+
+### Community & Identity
+- Central **grand monument** inspired by Islamic architectural elements
+- Dedicated **8-kanal school site** for future educational development
+- Purpose-built **central mosque** as a spiritual and community focal point
+
+**Images:**
+- `rahman-enclave-monument.jpg`
+- `rahman-enclave-central-mosque.jpg`
+
+---
+
+## SherCorp’s Role & Responsibilities
+
+SherCorp’s involvement went far beyond conventional marketing execution. I was responsible for **building the project’s identity from the ground up** and sustaining growth over multiple market cycles.
+
+### Scope of Work
+- Brand identity development
+- Creative direction and design systems
+- Digital marketing and performance campaigns
+- Sales enablement and lead management
+- Market positioning and pricing communication
+- Internal coordination with sales and operations teams
+
+---
+
+## Brand Identity & Creative Foundations
+
+The **Rahman Enclave logo** was conceptualized and finalized in 2016 to reflect:
+- Stability and long-term value
+- Community-driven living
+- Scalability for future phases
+
+### Marketing Collaterals
+- Designed and produced the **first official 16-page project booklet**
+- Established a consistent visual language across print, digital, and OOH media
+
+**Image:**
+- `rahman-enclave-booklet-cover.jpg`
+
+> Developer Note:  
+> If multiple booklet images exist, prefer filenames already used on the older portfolio page for continuity.
+
+---
+
+## Digital Marketing & Online Presence
+
+SherCorp built Rahman Enclave’s digital footprint from scratch and scaled it organically over time.
+
+### Key Digital Achievements
+- Designed and launched the official project website
+- Achieved strong **search engine visibility** for Islamabad real estate keywords
+- Built a **30,000+ organic social media following**
+- Generated **1M+ monthly impressions** at peak performance
+- Delivered **100+ qualified leads per month** during active sales phases
+
+---
+
+## Advertising & Outreach Strategy
+
+### Out-of-Home (OOH)
+- Conceptualized and designed large-format billboards
+- Strategic placement on high-traffic roads and expressways
+
+### Paid Media
+- Carefully timed paid social and search campaigns
+- Focused on conversion efficiency rather than vanity metrics
+- Supported sales launches, inventory clearances, and new phase announcements
+
+---
+
+## Sales Enablement & Process Optimization
+
+Beyond marketing execution, I worked closely with internal sales teams to improve operational efficiency.
+
+### Contributions
+- Sales funnel structuring
+- Lead qualification workflows
+- Campaign performance reporting
+- Coordination between marketing, sales agents, and management
+
+This integrated approach ensured marketing translated into **actual bookings and revenue**, not just visibility.
+
+---
+
+## Measurable Outcomes
+
+| Metric | Result |
+|------|-------|
+| Project Duration | 7+ Years |
+| Organic Social Following | 30,000+ |
+| Monthly Impressions | 1,000,000+ |
+| Qualified Leads (Peak) | 100+ / month |
+| Sales Contribution | **PKR 2+ Billion** |
+
+---
+
+## Project Legacy
+
+Rahman Enclave stands as a **long-term success story** — not driven by short-term hype, but by disciplined branding, trust-building, and sustained market presence.
+
+For SherCorp, this project represents:
+- Full-cycle real estate marketing expertise  
+- Proven ability to scale a brand over years  
+- Demonstrated impact on real, measurable revenue  
+
+---
+
+## Use on SherCorp Website
+
+> Developer Instructions:
+> - Treat this page as a **case study / portfolio detail page**
+> - Maintain image filenames as listed where possible
+> - Component suggestions:
+>   - HeroSection
+>   - ProjectOverview
+>   - ImageGallery
+>   - MetricsTable
+>   - Timeline / Responsibilities
+>   - OutcomeSummary
+
+---
+
+© SherCorp — All Rights Reserved  
+A Digital Marketing & Strategy Consultancy | Islamabad, Pakistan
