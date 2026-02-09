@@ -2,7 +2,7 @@
 
 import Image from "next/image"
 import { motion } from "framer-motion"
-import { Instagram, Linkedin, Twitter, ArrowRight } from "lucide-react"
+import { Linkedin, ArrowRight } from "lucide-react"
 
 const socialProjects = [
     // Main feature

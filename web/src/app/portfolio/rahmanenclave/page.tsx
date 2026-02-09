@@ -295,9 +295,9 @@ export default function RahmanEnclavePage() {
                 <div className="absolute top-0 left-0 w-1/2 h-full bg-neon-green/5 blur-3xl -translate-x-1/2" />
                 <div className="container px-4 mx-auto relative z-10">
                     <div className="max-w-4xl mx-auto text-center mb-16">
-                        <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">SherCorp's Role & Responsibilities</h2>
+                        <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">SherCorp&apos;s Role & Responsibilities</h2>
                         <p className="text-lg text-zinc-400">
-                            SherCorp's involvement went far beyond conventional marketing execution. I was responsible for building the project's identity from the ground up and sustaining growth over multiple market cycles.
+                            SherCorp&apos;s involvement went far beyond conventional marketing execution. I was responsible for building the project&apos;s identity from the ground up and sustaining growth over multiple market cycles.
                         </p>
                     </div>
 
@@ -389,7 +389,7 @@ export default function RahmanEnclavePage() {
                             <div>
                                 <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Digital Marketing & Online Presence</h2>
                                 <p className="text-lg text-zinc-400">
-                                    SherCorp built Rahman Enclave's digital footprint from scratch and scaled it organically over time.
+                                    SherCorp built Rahman Enclave&apos;s digital footprint from scratch and scaled it organically over time.
                                 </p>
                             </div>
 
@@ -561,7 +561,7 @@ export default function RahmanEnclavePage() {
                     <div className="flex flex-col md:flex-row items-center justify-between gap-8">
                         <div>
                             <h3 className="text-2xl font-bold text-white mb-2">Interested in Working Together?</h3>
-                            <p className="text-zinc-400">Let's discuss how SherCorp can help with your next project.</p>
+                            <p className="text-zinc-400">Let&apos;s discuss how SherCorp can help with your next project.</p>
                         </div>
                         <div className="flex gap-4">
                             <Button size="lg" className="bg-neon-green text-black hover:bg-neon-green/90" asChild>

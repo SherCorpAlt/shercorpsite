@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import {
-    Palette, Smartphone, Video, Megaphone,
+    Palette, Video, Megaphone,
     Users, Search, Cpu, LayoutGrid, CheckCircle2
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
