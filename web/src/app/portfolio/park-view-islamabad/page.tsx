@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { BedDouble, CheckCircle2, Home } from "lucide-react";
+import { CheckCircle2, Home } from "lucide-react";
 
 export const metadata: Metadata = {
     title: "Park View Islamabad | 5 Marla House for Sale | Vision Group",

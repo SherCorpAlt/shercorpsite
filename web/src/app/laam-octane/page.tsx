@@ -46,7 +46,7 @@ export default function LaamOctanePage() {
                         </div>
 
                         <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-white leading-tight">
-                            We Don’t Just Build Websites.<br />
+                            We Don&apos;t Just Build Websites.<br />
                             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
                                 We Architect Market Dominance.
                             </span>
@@ -80,12 +80,12 @@ export default function LaamOctanePage() {
                     <div className="grid lg:grid-cols-2 gap-16 items-center">
                         <div className="space-y-8">
                             <div>
-                                <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">The Challenge: Breaking the "Template" Ceiling</h2>
+                                <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">The Challenge: Breaking the &quot;Template&quot; Ceiling</h2>
                                 <div className="h-1 w-20 bg-blue-500 mb-8" />
                             </div>
 
                             <p className="text-lg text-zinc-300 leading-relaxed">
-                                When Octane approached SherCorp, they weren't just looking for a digital storefront; they were looking to disrupt a saturated e-commerce logistics and enablement market.
+                                When Octane approached SherCorp, they weren&apos;t just looking for a digital storefront; they were looking to disrupt a saturated e-commerce logistics and enablement market.
                             </p>
                             <p className="text-lg text-zinc-300 leading-relaxed">
                                 The existing digital landscape for boutique sellers was cluttered with mediocre interfaces and high friction. To win, Octane needed to solve three critical business bottlenecks:
@@ -107,7 +107,7 @@ export default function LaamOctanePage() {
                                     </div>
                                     <div>
                                         <h3 className="text-xl font-semibold text-white mb-2">The Complexity Barrier</h3>
-                                        <p className="text-zinc-400">Explaining global logistics, warehousing, and cross-border payments often leads to cognitive overload. If the user doesn't understand the value in 5 seconds, they bounce.</p>
+                                        <p className="text-zinc-400">Explaining global logistics, warehousing, and cross-border payments often leads to cognitive overload. If the user doesn&apos;t understand the value in 5 seconds, they bounce.</p>
                                     </div>
                                 </li>
                                 <li className="flex gap-4">
@@ -115,8 +115,8 @@ export default function LaamOctanePage() {
                                         <Layout className="w-6 h-6 text-purple-500" />
                                     </div>
                                     <div>
-                                        <h3 className="text-xl font-semibold text-white mb-2">The "Shopify" Standard</h3>
-                                        <p className="text-zinc-400">Boutique owners are used to world-class UX. To capture them, Octane couldn't just be "good"—it had to feel premium, seamless, and technologically superior.</p>
+                                        <h3 className="text-xl font-semibold text-white mb-2">The &quot;Shopify&quot; Standard</h3>
+                                        <p className="text-zinc-400">Boutique owners are used to world-class UX. To capture them, Octane couldn&apos;t just be &quot;good&quot;—it had to feel premium, seamless, and technologically superior.</p>
                                     </div>
                                 </li>
                             </ul>
@@ -140,7 +140,7 @@ export default function LaamOctanePage() {
                     <div className="max-w-4xl mx-auto text-center mb-16">
                         <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">The Strategy: Conversion by Design</h2>
                         <p className="text-lg text-zinc-400">
-                            SherCorp didn't start with a wireframe. We started with a Business Intelligence Audit. Our strategy was built on three pillars of elite digital positioning:
+                            SherCorp didn&apos;t start with a wireframe. We started with a Business Intelligence Audit. Our strategy was built on three pillars of elite digital positioning:
                         </p>
                     </div>
 
@@ -195,12 +195,12 @@ export default function LaamOctanePage() {
                             </div>
                             <h2 className="text-3xl md:text-4xl font-bold text-white">Interactive 3D Elements: Tangible Technology</h2>
                             <p className="text-lg text-zinc-400">
-                                To showcase Octane’s logistics prowess, we integrated interactive 3D elements that visualize the supply chain. These aren't just "eye candy"—they serve as visual anchors that explain complex warehousing and distribution flows faster than any paragraph of text could.
+                                To showcase Octane&apos;s logistics prowess, we integrated interactive 3D elements that visualize the supply chain. These aren&apos;t just &quot;eye candy&quot;—they serve as visual anchors that explain complex warehousing and distribution flows faster than any paragraph of text could.
                             </p>
                             <div className="pt-4 space-y-4">
                                 <h3 className="text-xl font-semibold text-white">UI/UX Design: The Logic of Luxury</h3>
                                 <p className="text-zinc-400">
-                                    We moved away from standard corporate palettes to a sleek, high-contrast interface. Every pixel drives the eye toward "Register" or "Calculate Profit".
+                                    We moved away from standard corporate palettes to a sleek, high-contrast interface. Every pixel drives the eye toward &quot;Register&quot; or &quot;Calculate Profit&quot;.
                                 </p>
                             </div>
                         </div>
@@ -214,7 +214,7 @@ export default function LaamOctanePage() {
                             </div>
                             <h2 className="text-3xl md:text-4xl font-bold text-white">Location-Based Shipping Estimators</h2>
                             <p className="text-lg text-zinc-400">
-                                The "Aha!" moment happens when a seller sees potential profit. We developed a proprietary, location-intelligent shipping calculator. By entering origin and destination, sellers get real-time transparency into costs, transforming the website from a brochure into a functional utility.
+                                The &quot;Aha!&quot; moment happens when a seller sees potential profit. We developed a proprietary, location-intelligent shipping calculator. By entering origin and destination, sellers get real-time transparency into costs, transforming the website from a brochure into a functional utility.
                             </p>
                             <div className="pt-4 space-y-4">
                                 <h3 className="text-xl font-semibold text-white">Performance Comparison Tools</h3>
@@ -251,17 +251,17 @@ export default function LaamOctanePage() {
                             </div>
                             <h2 className="text-3xl md:text-4xl font-bold text-white">FAQ Architecture & Copywriting</h2>
                             <p className="text-lg text-zinc-400">
-                                We stripped away the jargon. Our senior copywriters reframed Octane’s features into "Seller Benefits."
+                                We stripped away the jargon. Our senior copywriters reframed Octane&apos;s features into &quot;Seller Benefits.&quot;
                             </p>
                             <div className="p-4 rounded-xl bg-zinc-900 border border-zinc-800 my-4">
                                 <div className="grid grid-cols-2 gap-4">
                                     <div>
                                         <p className="text-xs text-zinc-500 uppercase">Old Way</p>
-                                        <p className="text-zinc-400 italic">"Integrated API for logistics."</p>
+                                        <p className="text-zinc-400 italic">&quot;Integrated API for logistics.&quot;</p>
                                     </div>
                                     <div>
                                         <p className="text-xs text-blue-500 uppercase">SherCorp Reframing</p>
-                                        <p className="text-white font-medium">"Sell to London from Lahore as easily as selling next door."</p>
+                                        <p className="text-white font-medium">&quot;Sell to London from Lahore as easily as selling next door.&quot;</p>
                                     </div>
                                 </div>
                             </div>
@@ -293,7 +293,7 @@ export default function LaamOctanePage() {
                     <div className="text-center mb-16">
                         <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">The Results: Growth by the Numbers</h2>
                         <p className="text-lg text-zinc-400 max-w-2xl mx-auto">
-                            The launch of the Octane platform didn't just meet expectations; it redefined what was possible for the brand within a single quarter.
+                            The launch of the Octane platform didn&apos;t just meet expectations; it redefined what was possible for the brand within a single quarter.
                         </p>
                     </div>
 
@@ -316,16 +316,16 @@ export default function LaamOctanePage() {
                         <div>
                             <h3 className="text-2xl font-bold text-white mb-4">Experience That Rivals Global Leaders</h3>
                             <p className="text-zinc-300 leading-relaxed mb-6">
-                                When a boutique owner visits the Octane site, they aren't just seeing a local logistics company. They are interacting with a platform that feels like Shopify, Stripe, or Revolut.
+                                When a boutique owner visits the Octane site, they aren&apos;t just seeing a local logistics company. They are interacting with a platform that feels like Shopify, Stripe, or Revolut.
                             </p>
                             <p className="text-zinc-300 leading-relaxed">
-                                By prioritizing Micro-interactions—the subtle animations when a button is hovered over, the smooth transitions between pages, and the lightning-fast load speeds—SherCorp ensured that Octane’s digital presence matched its global ambitions.
+                                By prioritizing Micro-interactions—the subtle animations when a button is hovered over, the smooth transitions between pages, and the lightning-fast load speeds—SherCorp ensured that Octane&apos;s digital presence matched its global ambitions.
                             </p>
                         </div>
                         <div>
                             <h3 className="text-2xl font-bold text-white mb-4">Business Impact: Beyond the Screen</h3>
                             <p className="text-zinc-300 leading-relaxed mb-6">
-                                This wasn't just a "web project." It was the creation of a Scalable Sales Force. The new Octane website <strong className="text-blue-400">reduced the sales cycle by 40%</strong>.
+                                This wasn&apos;t just a &quot;web project.&quot; It was the creation of a Scalable Sales Force. The new Octane website <strong className="text-blue-400">reduced the sales cycle by 40%</strong>.
                             </p>
                             <p className="text-zinc-300 leading-relaxed">
                                 Because the site effectively educates, handles objections, and demonstrates value through interactive tools, the leads arriving at the registration stage were pre-qualified and ready to ship. SherCorp turned Octane’s digital presence from a cost center into a Revenue Driver.
