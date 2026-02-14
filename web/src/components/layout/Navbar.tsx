@@ -42,10 +42,10 @@ export function Navbar() {
     ]
 
     return (
-        <header className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[90%] md:w-auto max-w-5xl">
-            <div className="flex items-center justify-between gap-1 p-1 rounded-full border border-white/10 bg-black/50 backdrop-blur-xl shadow-2xl pl-6 pr-2 py-2">
+        <header className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[90%] md:w-auto max-w-6xl">
+            <div className="flex items-center justify-between gap-1 p-1 rounded-full border border-white/10 bg-black/80 backdrop-blur-xl shadow-2xl px-8 py-2">
                 <Link href="/" className="mr-4 shrink-0">
-                    <Image src="/images/shercorp-logo-white.png" alt="SherCorp" width={150} height={35} className="h-6 md:h-[35px] w-auto" />
+                    <Image src="/images/shercorp-logo-white.png" alt="SherCorp" width={120} height={28} className="h-5 md:h-[28px] w-auto" />
                 </Link>
 
                 <nav className="hidden md:flex items-center gap-1">
@@ -125,7 +125,7 @@ export function Navbar() {
                     })}
                 </nav>
 
-                <div className="flex items-center gap-2 pl-2 md:border-l border-white/10 ml-2">
+                <div className="flex items-center gap-2">
                     <div className="hidden md:block">
                         <ModeToggle />
                     </div>
