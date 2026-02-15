@@ -12,7 +12,7 @@ import {
 
 export const metadata: Metadata = {
     title: "LAAM (Octane) - Case Study | SherCorp",
-    description: "How SherCorp transformed Octane from a brand concept into a high-conversion ecosystem that rivals global giants like Shopify.",
+    description: "How SherCorp crafted the brand concept of Octane that rivals global giants like Shopify.",
 };
 
 export default function LaamOctanePage() {
