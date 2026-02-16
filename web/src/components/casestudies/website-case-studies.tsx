@@ -8,21 +8,21 @@ import { ArrowUpRight, Code, Layout, Smartphone } from "lucide-react"
 
 const projects = [
     {
-        title: "Octane Store",
+        title: "LAAM (Octane)",
         category: "E-Commerce",
-        description: "A high-performance e-commerce experience driven by speed and conversion. Redefined the digital storefront with seamless navigation and instant loads.",
+        description: "Transforming a brand concept into a high-conversion ecosystem. 30x traffic growth and 45% user retention improvement.",
         icon: Smartphone,
         image: "/portfolio/laam-octane/UI Layout 1.png",
-        stats: ["98% Performance", "+45% Conversion", "0.5s Load Time"],
+        stats: ["30x Traffic", "800+ Sellers", "45% Retention"],
         color: "bg-blue-500",
         href: "/laam-octane"
     },
     {
         title: "LAAM Seller Central",
         category: "Enterprise Dashboard",
-        description: "Empowering thousands of sellers with a unified, data-driven dashboard. Complex logistics simplified into an intuitive, powerful interface.",
+        description: "Empowering 10k+ active sellers with real-time analytics and automated workflows. Complex logistics, simplified.",
         icon: Layout,
-        image: "/images/ai-solutions.jpg",
+        image: "/images/ai-solutions.jpg", // Keeping placeholder as page has none
         stats: ["10k+ Sellers", "Real-time Analytics", "Automated Workflows"],
         color: "bg-purple-500",
         href: "/laamsellercentral"
@@ -30,10 +30,10 @@ const projects = [
     {
         title: "Wavecomm Telecom",
         category: "Corporate Identity",
-        description: "Modernizing telecom infrastructure's digital presence. A sleek, trust-building platform for a nationwide connectivity provider.",
+        description: "Modernizing telecom infrastructure's digital presence. Achieving 98/100 performance score and generating 1000+ leads.",
         icon: Code,
         image: "/portfolio/wavecomm/Header Design.png",
-        stats: ["National Coverage", "B2B Integration", "Service Automation"],
+        stats: ["98/100 Speed", "60% Engagement", "1000+ Leads"],
         color: "bg-orange-500",
         href: "/Wavecomm"
     }
