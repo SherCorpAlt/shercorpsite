@@ -3,6 +3,7 @@
 import React, { useRef } from "react"
 import { motion, useInView } from "framer-motion"
 import Image from "next/image"
+import Link from "next/link"
 import { ArrowUpRight, Code, Layout, Smartphone } from "lucide-react"
 
 const projects = [
@@ -11,27 +12,30 @@ const projects = [
         category: "E-Commerce",
         description: "A high-performance e-commerce experience driven by speed and conversion. Redefined the digital storefront with seamless navigation and instant loads.",
         icon: Smartphone,
-        image: "/images/premium-design.jpg", // Using placeholder existing image
+        image: "/portfolio/laam-octane/UI Layout 1.png",
         stats: ["98% Performance", "+45% Conversion", "0.5s Load Time"],
-        color: "bg-blue-500"
+        color: "bg-blue-500",
+        href: "/laam-octane"
     },
     {
         title: "LAAM Seller Central",
         category: "Enterprise Dashboard",
         description: "Empowering thousands of sellers with a unified, data-driven dashboard. Complex logistics simplified into an intuitive, powerful interface.",
         icon: Layout,
-        image: "/images/ai-solutions.jpg", // Using placeholder existing image
+        image: "/images/ai-solutions.jpg",
         stats: ["10k+ Sellers", "Real-time Analytics", "Automated Workflows"],
-        color: "bg-purple-500"
+        color: "bg-purple-500",
+        href: "/laamsellercentral"
     },
     {
         title: "Wavecomm Telecom",
         category: "Corporate Identity",
         description: "Modernizing telecom infrastructure's digital presence. A sleek, trust-building platform for a nationwide connectivity provider.",
         icon: Code,
-        image: "/images/ui-ux-architecture.jpg", // Using placeholder existing image
+        image: "/portfolio/wavecomm/Header Design.png",
         stats: ["National Coverage", "B2B Integration", "Service Automation"],
-        color: "bg-orange-500"
+        color: "bg-orange-500",
+        href: "/Wavecomm"
     }
 ]
 
@@ -63,6 +67,7 @@ interface Project {
     image: string;
     stats: string[];
     color: string;
+    href: string;
 }
 
 function CaseStudyItem({ project, index }: { project: Project, index: number }) {
@@ -78,12 +83,11 @@ function CaseStudyItem({ project, index }: { project: Project, index: number }) 
             transition={{ duration: 0.8, delay: 0.2 }}
             className={`flex flex-col md:flex-row gap-12 md:gap-24 items-center ${!isEven ? 'md:flex-row-reverse' : ''}`}
         >
-            {/* Image Side */}
+            {/* Image Side - Wrapped in Link */}
             <div className="w-full md:w-1/2">
-                <div className="relative aspect-[4/3] rounded-3xl overflow-hidden group">
+                <Link href={project.href} className="block relative aspect-[4/3] rounded-3xl overflow-hidden group cursor-pointer">
                     <div className={`absolute inset-0 ${project.color} opacity-20 blur-[100px]`} />
                     <div className="relative h-full w-full bg-card border border-border backdrop-blur-sm rounded-3xl overflow-hidden">
-                        {/* Placeholder for actual screenshot */}
                         <Image
                             src={project.image}
                             alt={project.title}
@@ -92,7 +96,7 @@ function CaseStudyItem({ project, index }: { project: Project, index: number }) 
                         />
                         <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500" />
                     </div>
-                </div>
+                </Link>
             </div>
 
             {/* Content Side */}
@@ -116,10 +120,11 @@ function CaseStudyItem({ project, index }: { project: Project, index: number }) 
                     ))}
                 </div>
 
-                <button className="group flex items-center gap-2 text-foreground font-bold hover:text-neon-green transition-colors mt-8">
+                {/* Button Wrapped in Link */}
+                <Link href={project.href} className="group flex items-center gap-2 text-foreground font-bold hover:text-neon-green transition-colors mt-8 inline-flex cursor-pointer">
                     <span className="border-b border-transparent group-hover:border-neon-green transition-all pt-1">View Case Study</span>
                     <ArrowUpRight className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-                </button>
+                </Link>
             </div>
         </motion.div>
     )
