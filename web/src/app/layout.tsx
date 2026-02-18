@@ -7,6 +7,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { ParticleBackground } from "@/components/ui/particle-background";
 import { FluidCursor } from "@/components/ui/fluid-cursor";
+import { FloatingWhatsApp } from "@/components/ui/floating-whatsapp";
 
 const inter = Inter({
   variable: "--font-sans",
@@ -41,13 +42,14 @@ export default function RootLayout({
           <Navbar />
 
           {/* Main Content Wrapper - needs background to cover footer */}
-          <div className="relative z-10 bg-background shadow-2xl mb-[50vh] rounded-b-[3rem] overflow-hidden">
+          <div className="relative z-10 bg-background shadow-2xl rounded-b-[3rem] overflow-hidden">
             <main className="flex-1 flex flex-col min-h-screen">
               {children}
             </main>
           </div>
 
           <Footer />
+          <FloatingWhatsApp />
           <div className="fixed inset-0 -z-50 pointer-events-none">
             <ParticleBackground />
           </div>
