@@ -65,7 +65,7 @@ export async function submitContactForm(
     try {
         // Send to contactme@khawarsher.com
         await resend.emails.send({
-            from: "SherCorp Contact <onboarding@resend.dev>",
+            from: "SherCorp <contact@khawarsher.com>",
             to: "contactme@khawarsher.com",
             subject: `New SherCorp Inquiry: ${subject || "Web Inquiry"}`,
             html: emailBody,
@@ -74,7 +74,7 @@ export async function submitContactForm(
 
         // Send copy to khawaralisher@gmail.com
         await resend.emails.send({
-            from: "SherCorp Contact <onboarding@resend.dev>",
+            from: "SherCorp <contact@khawarsher.com>",
             to: "khawaralisher@gmail.com",
             subject: `From website: ${subject || "Web Inquiry"}`,
             html: emailBody,
