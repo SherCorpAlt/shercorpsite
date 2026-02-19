@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Card } from "@/components/ui/card"
-import { useRef, useEffect, useCallback, startTransition } from "react";
+import { useRef, useEffect, useCallback, startTransition, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { AlertCircle, CheckCircle2 } from "lucide-react";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
@@ -34,11 +34,15 @@ const initialState = {
 export function ContactSection() {
     const [state, formAction] = useActionState(submitContactForm, initialState);
     const { executeRecaptcha } = useGoogleReCaptcha();
+    const [clientError, setClientError] = useState<string | null>(null);
 
     // Create a wrapper for the form action to include the reCAPTCHA token
     const handleFormSubmit = useCallback(async (formData: FormData) => {
+        setClientError(null); // Clear previous errors
+
         if (!executeRecaptcha) {
             console.error("Recaptcha not available");
+            setClientError("Unable to verify you are human. Please reload the page or check your connection.");
             return;
         }
 
@@ -51,6 +55,7 @@ export function ContactSection() {
             });
         } catch (error) {
             console.error("Recaptcha execution failed:", error);
+            setClientError("Anti-spam verification failed. Please try again.");
         }
     }, [executeRecaptcha, formAction]);
 
@@ -77,7 +82,7 @@ export function ContactSection() {
                 <Card className="glass-card p-8 backdrop-blur-2xl border-white/20">
                     <form ref={formRef} action={handleFormSubmit} className="space-y-6">
                         <AnimatePresence mode="wait">
-                            {state.message && (
+                            {(state.message || clientError) && (
                                 <motion.div
                                     initial={{ opacity: 0, y: -10 }}
                                     animate={{ opacity: 1, y: 0 }}
@@ -88,7 +93,7 @@ export function ContactSection() {
                                         }`}
                                 >
                                     {state.success ? <CheckCircle2 className="w-5 h-5" /> : <AlertCircle className="w-5 h-5" />}
-                                    {state.message}
+                                    {state.message || clientError}
                                 </motion.div>
                             )}
                         </AnimatePresence>
