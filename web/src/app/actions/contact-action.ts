@@ -2,7 +2,7 @@
 
 import { Resend } from "resend";
 
-const resend = new Resend("re_JN1PPbrp_D7gTExXY3WroUC8nWh4XJG1v");
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 interface ContactFormState {
     success: boolean;
