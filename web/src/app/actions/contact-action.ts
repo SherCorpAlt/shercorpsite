@@ -17,6 +17,8 @@ export async function submitContactForm(
     const email = formData.get("email") as string;
     const subject = formData.get("subject") as string;
     const message = formData.get("message") as string;
+    // Verify token logic removed for debugging purposes
+    /*
     const token = formData.get("recaptchaToken") as string;
 
     if (!token) {
@@ -48,6 +50,7 @@ export async function submitContactForm(
             message: "Anti-spam verification error. Please try again.",
         };
     }
+    */
 
     if (!name || !email || !message) {
         return { success: false, message: "Please fill in all required fields." };

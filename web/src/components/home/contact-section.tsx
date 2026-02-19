@@ -10,7 +10,7 @@ import { Card } from "@/components/ui/card"
 import { useRef, useEffect, useCallback, startTransition, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { AlertCircle, CheckCircle2 } from "lucide-react";
-import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
+// import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 
 function SubmitButton() {
     const { pending } = useFormStatus();
@@ -33,31 +33,15 @@ const initialState = {
 
 export function ContactSection() {
     const [state, formAction] = useActionState(submitContactForm, initialState);
-    const { executeRecaptcha } = useGoogleReCaptcha();
     const [clientError, setClientError] = useState<string | null>(null);
 
-    // Create a wrapper for the form action to include the reCAPTCHA token
-    const handleFormSubmit = useCallback(async (formData: FormData) => {
-        setClientError(null); // Clear previous errors
-
-        if (!executeRecaptcha) {
-            console.error("Recaptcha not available");
-            setClientError("Unable to verify you are human. Please reload the page or check your connection.");
-            return;
-        }
-
-        try {
-            const token = await executeRecaptcha("contact_form");
-            formData.set("recaptchaToken", token);
-
-            startTransition(() => {
-                formAction(formData);
-            });
-        } catch (error) {
-            console.error("Recaptcha execution failed:", error);
-            setClientError("Anti-spam verification failed. Please try again.");
-        }
-    }, [executeRecaptcha, formAction]);
+    // Simplified submit handler directly calling action since reCAPTCHA is disabled
+    const handleFormSubmit = useCallback((formData: FormData) => {
+        setClientError(null);
+        startTransition(() => {
+            formAction(formData);
+        });
+    }, [formAction]);
 
     const formRef = useRef<HTMLFormElement>(null);
 
