@@ -9,6 +9,8 @@ import { ParticleBackground } from "@/components/ui/particle-background";
 import { FluidCursor } from "@/components/ui/fluid-cursor";
 import { FloatingWhatsApp } from "@/components/ui/floating-whatsapp";
 
+import { RecaptchaProvider } from "@/components/providers/recaptcha-provider";
+
 const inter = Inter({
   variable: "--font-sans",
   subsets: ["latin"],
@@ -32,28 +34,31 @@ export default function RootLayout({
       <body
         className={`${inter.variable} font-sans antialiased min-h-screen flex flex-col bg-background text-foreground selection:bg-neon-green/30 selection:text-neon-green`}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <FluidCursor />
-          <Navbar />
+        <RecaptchaProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <FluidCursor />
+            <Navbar />
 
-          {/* Main Content Wrapper - needs background to cover footer */}
-          <div className="relative z-10 bg-background shadow-2xl rounded-b-[3rem] overflow-hidden">
-            <main className="flex-1 flex flex-col min-h-screen">
-              {children}
-            </main>
-          </div>
+            {/* Main Content Wrapper - needs background to cover footer */}
+            <div className="relative z-10 bg-background shadow-2xl rounded-b-[3rem] overflow-hidden">
+              <main className="flex-1 flex flex-col min-h-screen">
+                {children}
+              </main>
+            </div>
 
-          <Footer />
-          <FloatingWhatsApp />
-          <div className="fixed inset-0 -z-50 pointer-events-none">
-            <ParticleBackground />
-          </div>
-        </ThemeProvider>
+            <Footer />
+            <FloatingWhatsApp />
+            <div className="fixed inset-0 -z-50 pointer-events-none">
+              <ParticleBackground />
+            </div>
+
+          </ThemeProvider>
+        </RecaptchaProvider>
       </body>
     </html>
   );
