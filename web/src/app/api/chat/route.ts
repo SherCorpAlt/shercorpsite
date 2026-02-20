@@ -15,7 +15,7 @@ export async function POST(req: Request) {
     const systemPrompt = INTERVIEWER_PROMPT.replace('[Name]', userName || 'User');
 
     const result = streamText({
-        model: google('gemini-2.0-flash'),
+        model: google('gemini-2.5-pro'),
         system: systemPrompt,
         messages,
     });
