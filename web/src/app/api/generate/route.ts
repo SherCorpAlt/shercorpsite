@@ -57,28 +57,47 @@ export async function POST(req: Request) {
         });
 
         // 3. Image Generation - fetch server-side and prepare as inline attachments
+        // Images are generated from AI-crafted prompts based on chat context — logo is independent
         const imageAttachments: { filename: string; content: Buffer; content_id: string }[] = [];
         const imageCids: string[] = [];
 
         for (let i = 0; i < strategy.image_prompts.length; i++) {
             const prompt = strategy.image_prompts[i];
-            const encodedPrompt = encodeURIComponent(prompt + " realistic, high quality, 8k");
-            const url = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=1080&height=1080&nologo=true`;
+            const encodedPrompt = encodeURIComponent(prompt);
+            // Use the current Pollinations endpoint with model param
+            const url = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=1080&height=1080&nologo=true&model=flux`;
             const cid = `social-post-${i + 1}`;
 
+            console.log(`[Image ${i + 1}] Fetching from Pollinations: ${prompt.substring(0, 80)}...`);
+
             try {
-                const imgRes = await fetch(url);
-                if (imgRes.ok) {
+                const imgRes = await fetch(url, {
+                    signal: AbortSignal.timeout(45000), // 45s timeout per image
+                });
+
+                const contentType = imgRes.headers.get('content-type') || '';
+                console.log(`[Image ${i + 1}] Status: ${imgRes.status}, Content-Type: ${contentType}`);
+
+                if (imgRes.ok && contentType.startsWith('image/')) {
                     const arrayBuffer = await imgRes.arrayBuffer();
-                    imageAttachments.push({
-                        filename: `social-post-${i + 1}.jpg`,
-                        content: Buffer.from(arrayBuffer),
-                        content_id: cid,
-                    });
-                    imageCids.push(cid);
+                    console.log(`[Image ${i + 1}] Successfully fetched ${arrayBuffer.byteLength} bytes`);
+
+                    if (arrayBuffer.byteLength > 1000) { // Ensure it's a real image, not a tiny error response
+                        imageAttachments.push({
+                            filename: `social-post-${i + 1}.jpg`,
+                            content: Buffer.from(arrayBuffer),
+                            content_id: cid,
+                        });
+                        imageCids.push(cid);
+                    } else {
+                        console.error(`[Image ${i + 1}] Response too small (${arrayBuffer.byteLength} bytes), likely not a real image`);
+                    }
+                } else {
+                    const body = await imgRes.text();
+                    console.error(`[Image ${i + 1}] Not an image response. Status: ${imgRes.status}, Content-Type: ${contentType}, Body: ${body.substring(0, 200)}`);
                 }
             } catch (imgErr) {
-                console.error(`Failed to fetch image ${i + 1}:`, imgErr);
+                console.error(`[Image ${i + 1}] Failed to fetch:`, imgErr);
             }
         }
 
