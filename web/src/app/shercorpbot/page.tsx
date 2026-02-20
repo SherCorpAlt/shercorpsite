@@ -69,9 +69,8 @@ export default function SherCorpBotPage() {
                         <motion.div
                             key="placeholder"
                             initial={{ opacity: 0, y: 40 }}
-                            whileInView={{ opacity: 1, y: 0 }}
+                            animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, scale: 0.95 }}
-                            viewport={{ once: true }}
                             transition={{ duration: 0.5 }}
                         >
                             <Card className="glass-card min-h-[600px] flex flex-col items-center justify-center p-12 text-center border-neon-green/30 relative overflow-hidden group">

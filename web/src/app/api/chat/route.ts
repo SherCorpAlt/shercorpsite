@@ -1,7 +1,11 @@
 
-import { google } from '@ai-sdk/google';
+import { createGoogleGenerativeAI } from '@ai-sdk/google';
 import { streamText } from 'ai';
 import { INTERVIEWER_PROMPT } from '@/lib/shercorp-prompts';
+
+const google = createGoogleGenerativeAI({
+    apiKey: process.env.GEMINI_API_KEY,
+});
 
 export const maxDuration = 30;
 

@@ -1,12 +1,16 @@
 
 import { NextResponse } from 'next/server';
-import { google } from '@ai-sdk/google';
+import { createGoogleGenerativeAI } from '@ai-sdk/google';
 import { generateObject } from 'ai';
 import { z } from 'zod';
 import { Resend } from 'resend';
 import { redis } from '@/lib/redis-utils';
 import { isAdmin } from '@/lib/constants';
 import { GENERATOR_SYSTEM_PROMPT } from '@/lib/shercorp-prompts';
+
+const google = createGoogleGenerativeAI({
+    apiKey: process.env.GEMINI_API_KEY,
+});
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
