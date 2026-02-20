@@ -20,7 +20,9 @@ export function ChatInterface({ userName, userEmail }: ChatInterfaceProps) {
     const [isGeneratingPlan, setIsGeneratingPlan] = useState(false);
     const [planSent, setPlanSent] = useState(false);
 
-    const { messages, input, handleInputChange, handleSubmit, isLoading, append } = useChat({
+    const [input, setInput] = useState('');
+
+    const { messages, append, isLoading } = useChat({
         api: '/api/chat',
         body: { userName },
         onFinish: (message) => {
@@ -67,6 +69,19 @@ export function ChatInterface({ userName, userEmail }: ChatInterfaceProps) {
             };
             reader.readAsDataURL(file);
         }
+    };
+
+    const handleSend = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if ((!input.trim() && !logoBase64)) return;
+
+        const userMessage = input;
+        setInput(''); // Clear input immediately
+
+        await append({
+            role: 'user',
+            content: userMessage
+        });
     };
 
     const handleGeneratePlan = async () => {
@@ -181,7 +196,7 @@ export function ChatInterface({ userName, userEmail }: ChatInterfaceProps) {
                         <p className="text-xs text-muted-foreground">This may take up to 60 seconds.</p>
                     </div>
                 ) : (
-                    <form onSubmit={handleSubmit} className="flex gap-2">
+                    <form onSubmit={handleSend} className="flex gap-2">
                         {showUpload && !logoBase64 && (
                             <div className="relative">
                                 <input
@@ -209,7 +224,7 @@ export function ChatInterface({ userName, userEmail }: ChatInterfaceProps) {
 
                         <Input
                             value={input}
-                            onChange={handleInputChange}
+                            onChange={(e) => setInput(e.target.value)}
                             placeholder={showUpload && !logoBase64 ? "Or type 'skip' to continue..." : "Type your answer..."}
                             className="bg-white/5 border-white/10 focus:border-neon-green/50"
                             autoFocus
