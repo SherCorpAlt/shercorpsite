@@ -1,10 +1,9 @@
-
 "use client";
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { Bot, Sparkles, Zap, BrainCircuit, ArrowRight } from "lucide-react";
 import { Gatekeeper } from "@/components/shercorpbot/gatekeeper";
 import { ChatInterface } from "@/components/shercorpbot/chat-interface";
@@ -14,7 +13,7 @@ export default function SherCorpBotPage() {
     const [user, setUser] = useState<{ name: string, email: string } | null>(null);
 
     return (
-        <div className="flex flex-col gap-24 py-20 w-full overflow-hidden">
+        <div className="flex flex-col gap-24 pt-32 pb-20 w-full">
             {/* Hero Section */}
             <section className="relative w-full flex flex-col items-center justify-center text-center px-4 space-y-8 min-h-[60vh]">
                 {/* Background Elements */}
@@ -64,62 +63,59 @@ export default function SherCorpBotPage() {
 
             {/* Interactive Bot Section */}
             <section className="container mx-auto px-4 w-[80%] min-h-[600px] relative" id="bot-interface">
-                <AnimatePresence mode="wait">
-                    {!isStarted ? (
-                        <motion.div
-                            key="placeholder"
-                            initial={{ opacity: 0, y: 40 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, scale: 0.95 }}
-                            transition={{ duration: 0.5 }}
-                        >
-                            <Card className="glass-card min-h-[600px] flex flex-col items-center justify-center p-12 text-center border-neon-green/30 relative overflow-hidden group">
-                                <div className="absolute inset-0 bg-gradient-to-b from-neon-green/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+                {!isStarted && (
+                    <motion.div
+                        initial={{ opacity: 0, y: 40 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5 }}
+                    >
+                        <Card className="glass-card min-h-[600px] flex flex-col items-center justify-center p-12 text-center border-neon-green/30 relative overflow-hidden group">
+                            <div className="absolute inset-0 bg-gradient-to-b from-neon-green/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
 
-                                <div className="bg-black/40 backdrop-blur-md p-6 rounded-full border border-white/10 mb-8 shadow-[0_0_30px_rgba(57,255,20,0.2)]">
-                                    <Bot className="w-16 h-16 text-neon-green" />
-                                </div>
-
-                                <h2 className="text-3xl md:text-4xl font-bold mb-4">Ready to Transform Your Business?</h2>
-                                <p className="text-muted-foreground text-lg mb-8 max-w-md">
-                                    Initialize SherCorpBot to generate your comprehensive marketing strategy and social assets in seconds.
-                                </p>
-
-                                <Button
-                                    onClick={() => setIsStarted(true)}
-                                    className="bg-neon-green text-black font-bold h-14 px-8 text-lg hover:bg-neon-green/80 hover:scale-105 transition-all duration-300 shadow-[0_0_20px_rgba(57,255,20,0.4)]"
-                                >
-                                    Start SherCorpBot Analysis <ArrowRight className="ml-2 w-5 h-5" />
-                                </Button>
-
-                                <p className="mt-6 text-sm text-muted-foreground/60 uppercase tracking-widest font-mono">
-                                    System Verified • Awaiting Input
-                                </p>
-                            </Card>
-                        </motion.div>
-                    ) : !user ? (
-                        <motion.div
-                            key="gatekeeper"
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, scale: 0.95 }}
-                            className="min-h-[600px] flex items-center justify-center"
-                        >
-                            <div className="w-full max-w-md">
-                                <Gatekeeper onUnlock={(name, email) => setUser({ name, email })} />
+                            <div className="bg-black/40 backdrop-blur-md p-6 rounded-full border border-white/10 mb-8 shadow-[0_0_30px_rgba(57,255,20,0.2)]">
+                                <Bot className="w-16 h-16 text-neon-green" />
                             </div>
-                        </motion.div>
-                    ) : (
-                        <motion.div
-                            key="chat"
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            className="h-[600px]"
-                        >
-                            <ChatInterface userName={user.name} userEmail={user.email} />
-                        </motion.div>
-                    )}
-                </AnimatePresence>
+
+                            <h2 className="text-3xl md:text-4xl font-bold mb-4">Ready to Transform Your Business?</h2>
+                            <p className="text-muted-foreground text-lg mb-8 max-w-md">
+                                Initialize SherCorpBot to generate your comprehensive marketing strategy and social assets in seconds.
+                            </p>
+
+                            <Button
+                                onClick={() => setIsStarted(true)}
+                                className="bg-neon-green text-black font-bold h-14 px-8 text-lg hover:bg-neon-green/80 hover:scale-105 transition-all duration-300 shadow-[0_0_20px_rgba(57,255,20,0.4)]"
+                            >
+                                Start SherCorpBot Analysis <ArrowRight className="ml-2 w-5 h-5" />
+                            </Button>
+
+                            <p className="mt-6 text-sm text-muted-foreground/60 uppercase tracking-widest font-mono">
+                                System Verified • Awaiting Input
+                            </p>
+                        </Card>
+                    </motion.div>
+                )}
+
+                {isStarted && !user && (
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="min-h-[600px] flex items-center justify-center"
+                    >
+                        <div className="w-full max-w-md">
+                            <Gatekeeper onUnlock={(name, email) => setUser({ name, email })} />
+                        </div>
+                    </motion.div>
+                )}
+
+                {isStarted && user && (
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="h-[600px]"
+                    >
+                        <ChatInterface userName={user.name} userEmail={user.email} />
+                    </motion.div>
+                )}
             </section>
 
             {/* Features / How It Works Grid */}
