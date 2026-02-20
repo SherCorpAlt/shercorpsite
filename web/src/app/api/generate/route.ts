@@ -14,7 +14,7 @@ const google = createGoogleGenerativeAI({
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-export const maxDuration = 120; // Allow time for AI generation + image fetching
+export const maxDuration = 120;
 
 export async function POST(req: Request) {
     try {
@@ -34,14 +34,13 @@ export async function POST(req: Request) {
         }
 
         // 2. AI Generation (Strategy)
-        // We need to convert the chat history to a format the model understands
         const coreMessages = chatHistory.map((m: { role: string; content: string }) => ({
             role: m.role as "user" | "assistant" | "system",
             content: m.content
         }));
 
         const { object: strategy } = await generateObject({
-            model: google('gemini-2.5-pro'),
+            model: google('gemini-2.0-flash'),
             schema: z.object({
                 business_summary: z.string(),
                 strategy_guidelines: z.array(z.string()),
@@ -56,152 +55,114 @@ export async function POST(req: Request) {
             messages: coreMessages,
         });
 
-        // 3. Image Generation - fetch server-side and prepare as inline attachments
-        // Images are generated from AI-crafted prompts based on chat context — logo is independent
-        const imageAttachments: { filename: string; content: Buffer; content_id: string }[] = [];
-        const imageCids: string[] = [];
+        // 3. Build image URLs for use in email and client-side rendering
+        // NOTE: We do NOT fetch images server-side — Vercel's data-center IPs are blocked by
+        // Pollinations.ai's Cloudflare layer (error 530/1033). Instead, we embed the URL
+        // directly; browsers and email clients load them transparently.
+        const imageUrls = strategy.image_prompts.map((prompt) => {
+            const encoded = encodeURIComponent(prompt);
+            return `https://image.pollinations.ai/prompt/${encoded}?width=1080&height=1080&nologo=true&model=flux&seed=${Math.floor(Math.random() * 99999)}`;
+        });
 
-        for (let i = 0; i < strategy.image_prompts.length; i++) {
-            const prompt = strategy.image_prompts[i];
-            const encodedPrompt = encodeURIComponent(prompt);
-            // Use the current Pollinations endpoint with model param
-            const url = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=1080&height=1080&nologo=true&model=flux`;
-            const cid = `social-post-${i + 1}`;
-
-            console.log(`[Image ${i + 1}] Fetching from Pollinations: ${prompt.substring(0, 80)}...`);
-
-            try {
-                const imgRes = await fetch(url, {
-                    signal: AbortSignal.timeout(45000), // 45s timeout per image
-                });
-
-                const contentType = imgRes.headers.get('content-type') || '';
-                console.log(`[Image ${i + 1}] Status: ${imgRes.status}, Content-Type: ${contentType}`);
-
-                if (imgRes.ok && contentType.startsWith('image/')) {
-                    const arrayBuffer = await imgRes.arrayBuffer();
-                    console.log(`[Image ${i + 1}] Successfully fetched ${arrayBuffer.byteLength} bytes`);
-
-                    if (arrayBuffer.byteLength > 1000) { // Ensure it's a real image, not a tiny error response
-                        imageAttachments.push({
-                            filename: `social-post-${i + 1}.jpg`,
-                            content: Buffer.from(arrayBuffer),
-                            content_id: cid,
-                        });
-                        imageCids.push(cid);
-                    } else {
-                        console.error(`[Image ${i + 1}] Response too small (${arrayBuffer.byteLength} bytes), likely not a real image`);
-                    }
-                } else {
-                    const body = await imgRes.text();
-                    console.error(`[Image ${i + 1}] Not an image response. Status: ${imgRes.status}, Content-Type: ${contentType}, Body: ${body.substring(0, 200)}`);
-                }
-            } catch (imgErr) {
-                console.error(`[Image ${i + 1}] Failed to fetch:`, imgErr);
-            }
-        }
-
-        // 4. Construct Email HTML
+        // 4. Construct Email HTML (images as external src — works in all major email clients)
         const logoHtml = logoBase64
             ? `<div style="text-align: center; margin-bottom: 20px;"><img src="${logoBase64}" alt="Your Logo" style="max-height: 80px; width: auto;" /></div>`
             : '';
 
         const roadmapHtml = strategy.growth_roadmap.map((item: { day: string; task: string }) => `
-            <div style="margin-bottom: 10px; border-left: 3px solid #39FF14; padding-left: 10px;">
-                <strong>${item.day}:</strong> ${item.task}
+            <div style="margin-bottom: 12px; border-left: 3px solid #39FF14; padding-left: 12px;">
+                <strong style="color:#39FF14;">${item.day}:</strong>
+                <span style="color:#333;"> ${item.task}</span>
             </div>
         `).join('');
 
-        const imagesHtml = imageCids.length > 0
-            ? imageCids.map((cid) => `
-                <div style="flex: 1; min-width: 250px; padding: 10px;">
-                    <img src="cid:${cid}" alt="AI Generated Social Post" style="width: 100%; border-radius: 8px; border: 1px solid #ddd;" />
+        const imagesHtml = imageUrls.length > 0
+            ? imageUrls.map((url, i) => `
+                <div style="flex: 1; min-width: 260px; padding: 8px;">
+                    <img src="${url}" alt="AI Social Post ${i + 1}" style="width:100%; border-radius:8px; border:1px solid #ddd;" />
+                    <p style="font-size:11px; color:#888; text-align:center; margin-top:4px;">Post ${i + 1} — Click to view full resolution</p>
                 </div>
             `).join('')
-            : '<p style="color: #888; font-style: italic;">Images could not be generated at this time.</p>';
+            : '<p style="color: #888; font-style: italic;">Images not available.</p>';
 
-        const upsellHtml = strategy.upsell_hooks.map((hook: string) => `<li>${hook}</li>`).join('');
+        const upsellHtml = strategy.upsell_hooks.map((hook: string) => `<li style="margin-bottom:8px;">${hook}</li>`).join('');
 
         const emailHtml = `
             <!DOCTYPE html>
             <html>
-            <body style="font-family: 'Helvetica Neue', Arial, sans-serif; line-height: 1.6; color: #333; background-color: #f9f9f9; padding: 20px;">
-                <div style="max-width: 700px; margin: 0 auto; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+            <body style="font-family: 'Helvetica Neue', Arial, sans-serif; line-height: 1.6; color: #333; background-color: #f9f9f9; padding: 20px; margin:0;">
+                <div style="max-width: 680px; margin: 0 auto; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
                     
                     <!-- Header -->
-                    <div style="background: #000; color: #fff; padding: 30px; text-align: center;">
-                        <h1 style="color: #39FF14; margin: 0; font-size: 28px;">SherCorp Digital Strategy</h1>
-                        <p style="margin-top: 10px; opacity: 0.8;">AI-Powered Roadmap for Growth</p>
+                    <div style="background: #000; color: #fff; padding: 32px; text-align: center;">
+                        <h1 style="color: #39FF14; margin: 0; font-size: 26px; letter-spacing: -0.5px;">SherCorp Digital Strategy</h1>
+                        <p style="margin-top: 8px; opacity: 0.7; font-size:14px;">AI-Powered Growth Roadmap — Generated exclusively for you</p>
                     </div>
 
-                    <div style="padding: 30px;">
+                    <div style="padding: 32px;">
                         ${logoHtml}
 
                         <!-- Business Summary -->
-                        <div style="margin-bottom: 30px; background: #f4f4f4; padding: 20px; border-radius: 8px;">
-                            <h3 style="margin-top: 0; color: #333;">Business Analysis</h3>
-                            <p>${strategy.business_summary}</p>
+                        <div style="margin-bottom: 28px; background: #f4f4f4; padding: 20px; border-radius: 8px; border-left: 4px solid #39FF14;">
+                            <h3 style="margin-top: 0; color: #111; font-size:16px;">📊 Business Analysis</h3>
+                            <p style="margin: 0; color:#444;">${strategy.business_summary}</p>
                         </div>
 
                         <!-- Core Strategy -->
-                        <div style="margin-bottom: 30px;">
-                            <h3 style="color: #333; border-bottom: 2px solid #39FF14; padding-bottom: 5px; display: inline-block;">Strategic Guidelines</h3>
-                            <ul style="margin-top: 15px;">
-                                ${strategy.strategy_guidelines.map((g: string) => `<li>${g}</li>`).join('')}
+                        <div style="margin-bottom: 28px;">
+                            <h3 style="color: #111; border-bottom: 2px solid #39FF14; padding-bottom: 6px; font-size:16px;">🎯 Strategic Guidelines</h3>
+                            <ul style="margin-top: 12px; padding-left: 20px; color:#444;">
+                                ${strategy.strategy_guidelines.map((g: string) => `<li style="margin-bottom:8px;">${g}</li>`).join('')}
                             </ul>
                         </div>
 
                         <!-- 30-Day Roadmap -->
-                        <div style="margin-bottom: 30px;">
-                            <h3 style="color: #333; border-bottom: 2px solid #39FF14; padding-bottom: 5px; display: inline-block;">30-Day Execution Plan</h3>
-                            <div style="margin-top: 15px;">
+                        <div style="margin-bottom: 28px;">
+                            <h3 style="color: #111; border-bottom: 2px solid #39FF14; padding-bottom: 6px; font-size:16px;">🗓️ 30-Day Execution Plan</h3>
+                            <div style="margin-top: 14px;">
                                 ${roadmapHtml}
                             </div>
                         </div>
 
-                        <!-- Visual Concepts -->
-                        <div style="margin-bottom: 30px;">
-                            <h3 style="color: #333; border-bottom: 2px solid #39FF14; padding-bottom: 5px; display: inline-block;">AI-Generated Visual Concepts</h3>
-                            <p style="font-size: 14px; color: #666;">Based on your brand identity parameters.</p>
-                            <div style="display: flex; flex-wrap: wrap; margin: 0 -10px;">
+                        <!-- AI Visual Concepts -->
+                        <div style="margin-bottom: 28px;">
+                            <h3 style="color: #111; border-bottom: 2px solid #39FF14; padding-bottom: 6px; font-size:16px;">🎨 AI-Generated Social Posts</h3>
+                            <p style="font-size: 13px; color: #666; margin-top:4px;">Custom visuals based on your brand and industry.</p>
+                            <div style="display: flex; flex-wrap: wrap; margin: 10px -8px 0;">
                                 ${imagesHtml}
                             </div>
                         </div>
 
-                        <!-- Next Steps / Upsell -->
-                        <div style="background: #000; color: #fff; padding: 25px; border-radius: 8px; text-align: center;">
-                            <h3 style="color: #39FF14; margin-top: 0;">Ready to execute this at scale?</h3>
-                            <div style="text-align: left; display: inline-block; margin: 0 auto;">
-                                <ul style="margin-bottom: 20px;">
+                        <!-- Upsell CTA -->
+                        <div style="background: #000; color: #fff; padding: 28px; border-radius: 10px; text-align: center;">
+                            <h3 style="color: #39FF14; margin-top: 0; font-size:18px;">Ready to execute this at scale?</h3>
+                            <p style="opacity:0.7; font-size:13px; margin-bottom:14px;">Here's what SherCorp can do for you:</p>
+                            <div style="text-align: left; display: inline-block; margin: 0 auto 20px;">
+                                <ul style="margin: 0; padding-left: 20px; text-align:left; color:#ccc; font-size:14px;">
                                     ${upsellHtml}
                                 </ul>
                             </div>
                             <div style="margin-top: 20px;">
-                                <a href="https://khawarsher.com/contact" style="background-color: #39FF14; color: #000; padding: 12px 25px; text-decoration: none; font-weight: bold; border-radius: 50px;">Book a Strategy Call</a>
+                                <a href="https://khawarsher.com/contact" style="background-color: #39FF14; color: #000; padding: 14px 28px; text-decoration: none; font-weight: bold; border-radius: 50px; font-size:15px; display:inline-block;">Book a Strategy Call →</a>
                             </div>
                         </div>
                     </div>
                     
-                    <div style="background: #f4f4f4; padding: 15px; text-align: center; font-size: 12px; color: #888;">
-                        &copy; ${new Date().getFullYear()} SherCorp. Generated by SherCorpBot.
+                    <div style="background: #f4f4f4; padding: 16px; text-align: center; font-size: 11px; color: #999;">
+                        © ${new Date().getFullYear()} SherCorp. Generated by SherCorpBot. | <a href="https://khawarsher.com" style="color:#39FF14;">khawarsher.com</a>
                     </div>
                 </div>
             </body>
             </html>
         `;
 
-        // 5. Send Email
+        // 5. Send Email (no attachments needed — images load from URLs)
         await resend.emails.send({
             from: 'SherCorp Bot <contact@khawarsher.com>',
             to: email,
-            bcc: 'khawaralisher@gmail.com', // Always notify admin
-            subject: 'Your AI-Generated Digital Strategy - SherCorp',
+            bcc: 'khawaralisher@gmail.com',
+            subject: 'Your AI-Generated Digital Strategy — SherCorp',
             html: emailHtml,
-            attachments: imageAttachments.map((att) => ({
-                filename: att.filename,
-                content: att.content,
-                content_id: att.content_id,
-            })),
         });
 
         // 6. Lock (if not admin)
@@ -209,7 +170,15 @@ export async function POST(req: Request) {
             await redis.set(PLAN_KEY, "true");
         }
 
-        return NextResponse.json({ success: true, message: 'Strategy sent to email!' });
+        // 7. Return strategy to client for in-page display
+        return NextResponse.json({
+            success: true,
+            message: 'Strategy sent to email!',
+            strategy: {
+                ...strategy,
+                image_urls: imageUrls,
+            }
+        });
 
     } catch (error) {
         console.error('Generation Error:', error);

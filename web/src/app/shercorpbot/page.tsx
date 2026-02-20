@@ -146,9 +146,12 @@ export default function SherCorpBotPage() {
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="h-[calc(100vh-200px)] min-h-[500px] max-h-[700px]"
+                        className="w-full"
                     >
-                        <ChatInterface userName={userName || "User"} userEmail={userEmail} />
+                        {/* Chat has fixed min-h; after strategy generated, results expand freely */}
+                        <div className="min-h-[600px]">
+                            <ChatInterface userName={userName || "User"} userEmail={userEmail} />
+                        </div>
                     </motion.div>
                 )}
             </section>
