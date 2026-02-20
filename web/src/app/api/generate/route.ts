@@ -40,7 +40,7 @@ export async function POST(req: Request) {
         }));
 
         const { object: strategy } = await generateObject({
-            model: google('gemini-2.0-flash'),
+            model: google('gemini-2.5-pro'),
             schema: z.object({
                 business_summary: z.string(),
                 strategy_guidelines: z.array(z.string()),
