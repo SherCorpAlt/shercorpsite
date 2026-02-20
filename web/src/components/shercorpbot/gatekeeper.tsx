@@ -38,8 +38,8 @@ export function Gatekeeper({ onUnlock }: GatekeeperProps) {
             }
 
             setStep("otp");
-        } catch (err: any) {
-            setError(err.message);
+        } catch (err: unknown) {
+            setError((err as Error).message);
         } finally {
             setLoading(false);
         }
@@ -64,8 +64,8 @@ export function Gatekeeper({ onUnlock }: GatekeeperProps) {
 
             const data = await res.json();
             onUnlock(data.name || name, email);
-        } catch (err: any) {
-            setError(err.message);
+        } catch (err: unknown) {
+            setError((err as Error).message);
         } finally {
             setLoading(false);
         }

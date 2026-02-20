@@ -31,7 +31,7 @@ export async function POST(req: Request) {
 
         // 2. AI Generation (Strategy)
         // We need to convert the chat history to a format the model understands
-        const coreMessages = chatHistory.map((m: any) => ({
+        const coreMessages = chatHistory.map((m: { role: string; content: string }) => ({
             role: m.role as "user" | "assistant" | "system",
             content: m.content
         }));
@@ -63,7 +63,7 @@ export async function POST(req: Request) {
             ? `<div style="text-align: center; margin-bottom: 20px;"><img src="${logoBase64}" alt="Your Logo" style="max-height: 80px; width: auto;" /></div>`
             : '';
 
-        const roadmapHtml = strategy.growth_roadmap.map((item: any) => `
+        const roadmapHtml = strategy.growth_roadmap.map((item: { day: string; task: string }) => `
             <div style="margin-bottom: 10px; border-left: 3px solid #39FF14; padding-left: 10px;">
                 <strong>${item.day}:</strong> ${item.task}
             </div>

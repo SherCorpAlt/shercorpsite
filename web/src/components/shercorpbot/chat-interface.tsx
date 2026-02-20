@@ -6,9 +6,9 @@ import { useChat } from '@ai-sdk/react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Send, Upload, Loader2, Bot, User, CheckCircle2 } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 interface ChatInterfaceProps {
     userName: string;
@@ -45,7 +45,7 @@ export function ChatInterface({ userName, userEmail }: ChatInterfaceProps) {
                 content: `Hello ${userName}! I'm SherCorpBot. I'm here to build your custom growth strategy. \n\nLet's start: Describe your industry and where do you operate? (So we can customize your plan)`
             });
         }
-    }, [userName]); // Only run once on mount/user change
+    }, [userName, messages.length, append]); // Only run once on mount/user change
 
     // Check if we should show upload button (dumb check based on last message)
     const lastMessage = messages[messages.length - 1];
@@ -102,7 +102,7 @@ export function ChatInterface({ userName, userEmail }: ChatInterfaceProps) {
                 </motion.div>
                 <h2 className="text-3xl font-bold">Strategy Generated!</h2>
                 <p className="text-muted-foreground max-w-md">
-                    We've analyzed your inputs and sent a comprehensive digital marketing roadmap + 2 AI-generated social posts to <strong>{userEmail}</strong>.
+                    We&apos;ve analyzed your inputs and sent a comprehensive digital marketing roadmap + 2 AI-generated social posts to <strong>{userEmail}</strong>.
                 </p>
                 <p className="text-sm text-white/50">Check your spam folder just in case.</p>
                 <Button variant="outline" onClick={() => window.location.reload()}>Start New Session</Button>
@@ -128,7 +128,7 @@ export function ChatInterface({ userName, userEmail }: ChatInterfaceProps) {
             {/* Chat Area */}
             <div className="flex-1 p-4 overflow-y-auto custom-scrollbar">
                 <div className="space-y-4">
-                    {messages.map((m, index) => (
+                    {messages.map((m) => (
                         <motion.div
                             key={m.id}
                             initial={{ opacity: 0, y: 10 }}
