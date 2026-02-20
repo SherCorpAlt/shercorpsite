@@ -134,7 +134,7 @@ export function ChatInterface({ userName, userEmail }: ChatInterfaceProps) {
                         <Bot className="w-6 h-6 text-neon-green" />
                     </div>
                     <div>
-                        <h3 className="font-bold text-sm">SherCorpBot <span className="text-xs font-normal text-muted-foreground ml-2">v1.2 (Beta)</span></h3>
+                        <h3 className="font-bold text-sm">SherCorpBot <span className="text-xs font-normal text-muted-foreground ml-2">v1.3 (Stable)</span></h3>
                         <p className="text-xs text-neon-green animate-pulse">● Online • Connected to Gemini Pro</p>
                     </div>
                 </div>
