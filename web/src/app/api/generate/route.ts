@@ -41,7 +41,7 @@ export async function POST(req: Request) {
         }));
 
         const { object: strategy } = await generateObject({
-            model: google('gemini-1.5-pro-latest'), // Use Pro for better reasoning
+            model: google('gemini-2.0-flash'), // Current recommended model
             schema: z.object({
                 business_summary: z.string(),
                 strategy_guidelines: z.array(z.string()),
