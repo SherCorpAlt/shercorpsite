@@ -34,10 +34,13 @@ export function ChatInterface({ userName, userEmail }: ChatInterfaceProps) {
     const [planSent, setPlanSent] = useState(false);
 
     const messagesEndRef = useRef<HTMLDivElement>(null);
+    const chatContainerRef = useRef<HTMLDivElement>(null);
 
-    // Auto-scroll
+    // Auto-scroll within chat container only (not the page)
     useEffect(() => {
-        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+        if (chatContainerRef.current) {
+            chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+        }
     }, [messages]);
 
     // Send a message to the AI and stream the response
@@ -208,7 +211,7 @@ export function ChatInterface({ userName, userEmail }: ChatInterfaceProps) {
             </div>
 
             {/* Chat Area */}
-            <div className="flex-1 p-4 overflow-y-auto custom-scrollbar">
+            <div ref={chatContainerRef} className="flex-1 p-4 overflow-y-auto custom-scrollbar">
                 <div className="space-y-4">
                     {messages.map((m) => (
                         <motion.div
