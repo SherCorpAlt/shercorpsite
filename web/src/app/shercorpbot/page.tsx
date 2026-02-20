@@ -3,14 +3,16 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import { motion } from "framer-motion";
 import { Bot, Sparkles, Zap, BrainCircuit, ArrowRight } from "lucide-react";
-import { Gatekeeper } from "@/components/shercorpbot/gatekeeper";
 import { ChatInterface } from "@/components/shercorpbot/chat-interface";
 
 export default function SherCorpBotPage() {
     const [isStarted, setIsStarted] = useState(false);
-    const [user, setUser] = useState<{ name: string, email: string } | null>(null);
+    const [userName, setUserName] = useState("");
+    const [nameInput, setNameInput] = useState("");
+    const [showNamePrompt, setShowNamePrompt] = useState(false);
 
     return (
         <div className="flex flex-col gap-24 pt-32 pb-20 w-full">
@@ -63,14 +65,14 @@ export default function SherCorpBotPage() {
 
             {/* Interactive Bot Section */}
             <section className="container mx-auto px-4 w-[80%] min-h-[600px] relative" id="bot-interface">
-                {!isStarted && (
+                {!isStarted && !showNamePrompt && (
                     <motion.div
                         initial={{ opacity: 0, y: 40 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5 }}
                     >
                         <Card className="glass-card min-h-[600px] flex flex-col items-center justify-center p-12 text-center border-neon-green/30 relative overflow-hidden group">
-                            <div className="absolute inset-0 bg-gradient-to-b from-neon-green/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+                            <div className="absolute inset-0 bg-gradient-to-b from-neon-green/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none" />
 
                             <div className="bg-black/40 backdrop-blur-md p-6 rounded-full border border-white/10 mb-8 shadow-[0_0_30px_rgba(57,255,20,0.2)]">
                                 <Bot className="w-16 h-16 text-neon-green" />
@@ -82,8 +84,8 @@ export default function SherCorpBotPage() {
                             </p>
 
                             <Button
-                                onClick={() => setIsStarted(true)}
-                                className="bg-neon-green text-black font-bold h-14 px-8 text-lg hover:bg-neon-green/80 hover:scale-105 transition-all duration-300 shadow-[0_0_20px_rgba(57,255,20,0.4)]"
+                                onClick={() => setShowNamePrompt(true)}
+                                className="bg-neon-green text-black font-bold h-14 px-8 text-lg hover:bg-neon-green/80 hover:scale-105 transition-all duration-300 shadow-[0_0_20px_rgba(57,255,20,0.4)] relative z-10"
                             >
                                 Start SherCorpBot Analysis <ArrowRight className="ml-2 w-5 h-5" />
                             </Button>
@@ -95,25 +97,45 @@ export default function SherCorpBotPage() {
                     </motion.div>
                 )}
 
-                {isStarted && !user && (
+                {!isStarted && showNamePrompt && (
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         className="min-h-[600px] flex items-center justify-center"
                     >
-                        <div className="w-full max-w-md">
-                            <Gatekeeper onUnlock={(name, email) => setUser({ name, email })} />
-                        </div>
+                        <Card className="glass-card p-8 max-w-md w-full mx-auto text-center">
+                            <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-neon-green/20 mb-4 mx-auto">
+                                <Bot className="w-6 h-6 text-neon-green" />
+                            </div>
+                            <h2 className="text-2xl font-bold mb-2">What&apos;s your name?</h2>
+                            <p className="text-sm text-muted-foreground mb-6">So SherCorpBot can personalize your strategy.</p>
+                            <form onSubmit={(e) => { e.preventDefault(); if (nameInput.trim()) { setUserName(nameInput.trim()); setIsStarted(true); } }} className="space-y-4">
+                                <Input
+                                    placeholder="Enter your name"
+                                    value={nameInput}
+                                    onChange={(e) => setNameInput(e.target.value)}
+                                    className="bg-white/5 border-white/10 h-12 text-center text-lg"
+                                    autoFocus
+                                    required
+                                />
+                                <Button
+                                    type="submit"
+                                    className="w-full bg-neon-green text-black font-bold h-12 hover:bg-neon-green/80 transition-all duration-300"
+                                >
+                                    Launch SherCorpBot <ArrowRight className="ml-2 w-5 h-5" />
+                                </Button>
+                            </form>
+                        </Card>
                     </motion.div>
                 )}
 
-                {isStarted && user && (
+                {isStarted && (
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         className="h-[600px]"
                     >
-                        <ChatInterface userName={user.name} userEmail={user.email} />
+                        <ChatInterface userName={userName || "User"} userEmail="guest@shercorp.com" />
                     </motion.div>
                 )}
             </section>
