@@ -14,7 +14,7 @@ const google = createGoogleGenerativeAI({
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-export const maxDuration = 60; // Allow more time for generation
+export const maxDuration = 120; // Allow time for AI generation + image fetching
 
 export async function POST(req: Request) {
     try {
@@ -56,11 +56,31 @@ export async function POST(req: Request) {
             messages: coreMessages,
         });
 
-        // 3. Image Generation URLs
-        const imageUrls = strategy.image_prompts.map((prompt: string) => {
+        // 3. Image Generation - fetch server-side and prepare as inline attachments
+        const imageAttachments: { filename: string; content: Buffer; content_id: string }[] = [];
+        const imageCids: string[] = [];
+
+        for (let i = 0; i < strategy.image_prompts.length; i++) {
+            const prompt = strategy.image_prompts[i];
             const encodedPrompt = encodeURIComponent(prompt + " realistic, high quality, 8k");
-            return `https://image.pollinations.ai/prompt/${encodedPrompt}?width=1080&height=1080&nologo=true`;
-        });
+            const url = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=1080&height=1080&nologo=true`;
+            const cid = `social-post-${i + 1}`;
+
+            try {
+                const imgRes = await fetch(url);
+                if (imgRes.ok) {
+                    const arrayBuffer = await imgRes.arrayBuffer();
+                    imageAttachments.push({
+                        filename: `social-post-${i + 1}.jpg`,
+                        content: Buffer.from(arrayBuffer),
+                        content_id: cid,
+                    });
+                    imageCids.push(cid);
+                }
+            } catch (imgErr) {
+                console.error(`Failed to fetch image ${i + 1}:`, imgErr);
+            }
+        }
 
         // 4. Construct Email HTML
         const logoHtml = logoBase64
@@ -73,11 +93,13 @@ export async function POST(req: Request) {
             </div>
         `).join('');
 
-        const imagesHtml = imageUrls.map((url: string) => `
-            <div style="flex: 1; min-width: 250px; padding: 10px;">
-                <img src="${url}" alt="AI Generated Concept" style="width: 100%; border-radius: 8px; border: 1px solid #ddd;" />
-            </div>
-        `).join('');
+        const imagesHtml = imageCids.length > 0
+            ? imageCids.map((cid) => `
+                <div style="flex: 1; min-width: 250px; padding: 10px;">
+                    <img src="cid:${cid}" alt="AI Generated Social Post" style="width: 100%; border-radius: 8px; border: 1px solid #ddd;" />
+                </div>
+            `).join('')
+            : '<p style="color: #888; font-style: italic;">Images could not be generated at this time.</p>';
 
         const upsellHtml = strategy.upsell_hooks.map((hook: string) => `<li>${hook}</li>`).join('');
 
@@ -156,6 +178,11 @@ export async function POST(req: Request) {
             bcc: 'khawaralisher@gmail.com', // Always notify admin
             subject: 'Your AI-Generated Digital Strategy - SherCorp',
             html: emailHtml,
+            attachments: imageAttachments.map((att) => ({
+                filename: att.filename,
+                content: att.content,
+                content_id: att.content_id,
+            })),
         });
 
         // 6. Lock (if not admin)

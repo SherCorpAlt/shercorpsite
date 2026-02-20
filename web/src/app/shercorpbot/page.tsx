@@ -11,7 +11,9 @@ import { ChatInterface } from "@/components/shercorpbot/chat-interface";
 export default function SherCorpBotPage() {
     const [isStarted, setIsStarted] = useState(false);
     const [userName, setUserName] = useState("");
+    const [userEmail, setUserEmail] = useState("");
     const [nameInput, setNameInput] = useState("");
+    const [emailInput, setEmailInput] = useState("");
     const [showNamePrompt, setShowNamePrompt] = useState(false);
 
     return (
@@ -107,17 +109,26 @@ export default function SherCorpBotPage() {
                             <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-neon-green/20 mb-4 mx-auto">
                                 <Bot className="w-6 h-6 text-neon-green" />
                             </div>
-                            <h2 className="text-2xl font-bold mb-2">What&apos;s your name?</h2>
-                            <p className="text-sm text-muted-foreground mb-6">So SherCorpBot can personalize your strategy.</p>
-                            <form onSubmit={(e) => { e.preventDefault(); if (nameInput.trim()) { setUserName(nameInput.trim()); setIsStarted(true); } }} className="space-y-4">
+                            <h2 className="text-2xl font-bold mb-2">Before we begin...</h2>
+                            <p className="text-sm text-muted-foreground mb-6">Enter your details so SherCorpBot can personalize your strategy and deliver it to your inbox.</p>
+                            <form onSubmit={(e) => { e.preventDefault(); if (nameInput.trim() && emailInput.trim()) { setUserName(nameInput.trim()); setUserEmail(emailInput.trim()); setIsStarted(true); } }} className="space-y-4">
                                 <Input
-                                    placeholder="Enter your name"
+                                    placeholder="Your Name"
                                     value={nameInput}
                                     onChange={(e) => setNameInput(e.target.value)}
                                     className="bg-white/5 border-white/10 h-12 text-center text-lg"
                                     autoFocus
                                     required
                                 />
+                                <Input
+                                    type="email"
+                                    placeholder="Your Email Address"
+                                    value={emailInput}
+                                    onChange={(e) => setEmailInput(e.target.value)}
+                                    className="bg-white/5 border-white/10 h-12 text-center text-lg"
+                                    required
+                                />
+                                <p className="text-xs text-muted-foreground">Your strategy report will be emailed here.</p>
                                 <Button
                                     type="submit"
                                     className="w-full bg-neon-green text-black font-bold h-12 hover:bg-neon-green/80 transition-all duration-300"
@@ -135,7 +146,7 @@ export default function SherCorpBotPage() {
                         animate={{ opacity: 1, y: 0 }}
                         className="h-[600px]"
                     >
-                        <ChatInterface userName={userName || "User"} userEmail="guest@shercorp.com" />
+                        <ChatInterface userName={userName || "User"} userEmail={userEmail} />
                     </motion.div>
                 )}
             </section>
