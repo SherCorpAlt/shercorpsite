@@ -22,7 +22,7 @@ export function ChatInterface({ userName, userEmail }: ChatInterfaceProps) {
 
     const [input, setInput] = useState('');
 
-    const { messages, append, isLoading } = useChat({
+    const { messages, sendMessage, isLoading } = useChat({
         api: '/api/chat',
         body: { userName },
         onFinish: (message) => {
@@ -42,12 +42,12 @@ export function ChatInterface({ userName, userEmail }: ChatInterfaceProps) {
     // Initial Greeting
     useEffect(() => {
         if (messages.length === 0) {
-            append({
+            sendMessage({
                 role: 'assistant',
                 content: `Hello ${userName}! I'm SherCorpBot. I'm here to build your custom growth strategy. \n\nLet's start: Describe your industry and where do you operate? (So we can customize your plan)`
             });
         }
-    }, [userName, messages.length, append]); // Only run once on mount/user change
+    }, [userName, messages.length, sendMessage]); // Only run once on mount/user change
 
     // Check if we should show upload button (dumb check based on last message)
     const lastMessage = messages[messages.length - 1];
@@ -62,7 +62,7 @@ export function ChatInterface({ userName, userEmail }: ChatInterfaceProps) {
             reader.onloadend = () => {
                 setLogoBase64(reader.result as string);
                 // Auto-send "Logo uploaded" message to advance chat
-                append({
+                sendMessage({
                     role: 'user',
                     content: `[System] Logo uploaded: ${file.name}`
                 });
@@ -78,7 +78,7 @@ export function ChatInterface({ userName, userEmail }: ChatInterfaceProps) {
         const userMessage = input;
         setInput(''); // Clear input immediately
 
-        await append({
+        await sendMessage({
             role: 'user',
             content: userMessage
         });
