@@ -1,8 +1,7 @@
 
 "use client";
 
-import { useState, useEffect, useRef } from 'react';
-import { useChat } from '@ai-sdk/react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
@@ -10,27 +9,30 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Send, Upload, Loader2, Bot, User, CheckCircle2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
+interface ChatMessage {
+    id: string;
+    role: 'user' | 'assistant' | 'system';
+    content: string;
+}
+
 interface ChatInterfaceProps {
     userName: string;
     userEmail: string;
 }
 
+let messageIdCounter = 0;
+function generateId() {
+    messageIdCounter++;
+    return `msg-${Date.now()}-${messageIdCounter}`;
+}
+
 export function ChatInterface({ userName, userEmail }: ChatInterfaceProps) {
+    const [messages, setMessages] = useState<ChatMessage[]>([]);
+    const [input, setInput] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
     const [logoBase64, setLogoBase64] = useState<string | null>(null);
     const [isGeneratingPlan, setIsGeneratingPlan] = useState(false);
     const [planSent, setPlanSent] = useState(false);
-
-    const [input, setInput] = useState('');
-
-    const { messages, sendMessage, isLoading } = useChat({
-        api: '/api/chat',
-        body: { userName },
-        onFinish: (message) => {
-            if (message.content.includes('[DATA_COLLECTION_COMPLETE]')) {
-                handleGeneratePlan();
-            }
-        }
-    });
 
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -39,17 +41,79 @@ export function ChatInterface({ userName, userEmail }: ChatInterfaceProps) {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, [messages]);
 
+    // Send a message to the AI and stream the response
+    const sendToAI = useCallback(async (allMessages: ChatMessage[]) => {
+        setIsLoading(true);
+
+        // Create a placeholder for the assistant response
+        const assistantId = generateId();
+        setMessages(prev => [...prev, { id: assistantId, role: 'assistant', content: '' }]);
+
+        try {
+            const res = await fetch('/api/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    messages: allMessages.map(m => ({ role: m.role, content: m.content })),
+                    userName,
+                }),
+            });
+
+            if (!res.ok) {
+                throw new Error(`API error: ${res.status}`);
+            }
+
+            const reader = res.body?.getReader();
+            if (!reader) throw new Error('No response body');
+
+            const decoder = new TextDecoder();
+            let fullContent = '';
+
+            while (true) {
+                const { done, value } = await reader.read();
+                if (done) break;
+
+                const chunk = decoder.decode(value, { stream: true });
+                fullContent += chunk;
+
+                // Update the assistant message content progressively
+                setMessages(prev =>
+                    prev.map(m => m.id === assistantId ? { ...m, content: fullContent } : m)
+                );
+            }
+
+            // Check if the complete message contains the data collection complete marker
+            if (fullContent.includes('[DATA_COLLECTION_COMPLETE]')) {
+                handleGeneratePlan(allMessages);
+            }
+        } catch (error) {
+            console.error('Chat error:', error);
+            setMessages(prev =>
+                prev.map(m => m.id === assistantId
+                    ? { ...m, content: 'Sorry, something went wrong. Please try again.' }
+                    : m
+                )
+            );
+        } finally {
+            setIsLoading(false);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [userName]);
+
     // Initial Greeting
     useEffect(() => {
         if (messages.length === 0) {
-            sendMessage({
+            const greeting: ChatMessage = {
+                id: generateId(),
                 role: 'assistant',
                 content: `Hello ${userName}! I'm SherCorpBot. I'm here to build your custom growth strategy. \n\nLet's start: Describe your industry and where do you operate? (So we can customize your plan)`
-            });
+            };
+            setMessages([greeting]);
         }
-    }, [userName, messages.length, sendMessage]); // Only run once on mount/user change
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [userName]);
 
-    // Check if we should show upload button (dumb check based on last message)
+    // Check if we should show upload button
     const lastMessage = messages[messages.length - 1];
     const showUpload = lastMessage?.role === 'assistant' &&
         (lastMessage.content.toLowerCase().includes('logo') ||
@@ -61,11 +125,14 @@ export function ChatInterface({ userName, userEmail }: ChatInterfaceProps) {
             const reader = new FileReader();
             reader.onloadend = () => {
                 setLogoBase64(reader.result as string);
-                // Auto-send "Logo uploaded" message to advance chat
-                sendMessage({
+                const userMsg: ChatMessage = {
+                    id: generateId(),
                     role: 'user',
                     content: `[System] Logo uploaded: ${file.name}`
-                });
+                };
+                const updated = [...messages, userMsg];
+                setMessages(updated);
+                sendToAI(updated);
             };
             reader.readAsDataURL(file);
         }
@@ -73,18 +140,20 @@ export function ChatInterface({ userName, userEmail }: ChatInterfaceProps) {
 
     const handleSend = async (e: React.FormEvent) => {
         e.preventDefault();
-        if ((!input.trim() && !logoBase64)) return;
+        if (!input.trim() && !logoBase64) return;
 
-        const userMessage = input;
-        setInput(''); // Clear input immediately
-
-        await sendMessage({
+        const userMsg: ChatMessage = {
+            id: generateId(),
             role: 'user',
-            content: userMessage
-        });
+            content: input
+        };
+        setInput('');
+        const updated = [...messages, userMsg];
+        setMessages(updated);
+        await sendToAI(updated);
     };
 
-    const handleGeneratePlan = async () => {
+    const handleGeneratePlan = async (chatHistory?: ChatMessage[]) => {
         setIsGeneratingPlan(true);
         try {
             await fetch('/api/generate', {
@@ -92,14 +161,13 @@ export function ChatInterface({ userName, userEmail }: ChatInterfaceProps) {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     email: userEmail,
-                    chatHistory: messages, // Send full context
+                    chatHistory: chatHistory || messages,
                     logoBase64
                 })
             });
             setPlanSent(true);
         } catch (error) {
             console.error(error);
-            // Handle error (maybe toast)
         } finally {
             setIsGeneratingPlan(false);
         }
