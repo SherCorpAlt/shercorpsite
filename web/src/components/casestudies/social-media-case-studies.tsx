@@ -42,10 +42,22 @@ const socialProjects = [
         featured: false,
         color: "bg-purple-600",
         href: "/laamsellercentral"
+    },
+    {
+        title: "Artimes Luxe",
+        platform: "Instagram Strategy",
+        growth: "10k Followers",
+        image: "/portfolio/artimes-luxe/social-post-main-visual.png",
+        featured: false,
+        color: "bg-pink-600",
+        href: "/artimes-luxe",
+        contain: true
     }
 ]
 
 import Link from "next/link"; // Ensure Link is imported
+
+import { cn } from "@/lib/utils";
 
 export function SocialMediaCaseStudies() {
     return (
@@ -71,7 +83,10 @@ export function SocialMediaCaseStudies() {
                                 src={socialProjects[0].image}
                                 alt={socialProjects[0].title}
                                 fill
-                                className="object-cover group-hover:scale-105 transition-transform duration-700 opacity-60 group-hover:opacity-40"
+                                className={cn(
+                                    "transition-transform duration-700 opacity-60 group-hover:opacity-40",
+                                    (socialProjects[0] as any).contain ? "object-contain p-4" : "object-cover"
+                                )}
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
 
@@ -101,7 +116,10 @@ export function SocialMediaCaseStudies() {
                                     src={project.image}
                                     alt={project.title}
                                     fill
-                                    className="object-cover group-hover:scale-110 transition-transform duration-700 opacity-60 group-hover:opacity-40"
+                                    className={cn(
+                                        "transition-transform duration-700 opacity-60 group-hover:opacity-40",
+                                        (project as any).contain ? "object-contain p-4" : "object-cover"
+                                    )}
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent" />
 

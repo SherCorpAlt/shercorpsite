@@ -8,6 +8,7 @@ export function TrustBar() {
         { name: "Xfinity", image: "/logos/Xfinity_Logo-02.png" },
         { name: "Dynasty Telecom", image: "/logos/Dynasty Telecom Logo white 2-01.png" },
         { name: "City Apartments", image: "/logos/City apats fb logo.jpg" },
+        { name: "Artimes Luxe", image: "/logos/artimes-luxe.jpg" },
     ]
 
     return (

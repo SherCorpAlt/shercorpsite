@@ -53,6 +53,23 @@ const successStories = [
             { label: "CPL", value: "$0.14" },
             { label: "Sessions", value: "+60%" }
         ]
+    },
+    {
+        id: 4,
+        client: "Artimes Luxe",
+        industry: "Fashion & Events",
+        quote: "SherCorp managed our Instagram content strategy, resulting in 10k new followers in just 6 months with elite visual resonance.",
+        stat: "10k Followers",
+        image: "/portfolio/artimes-luxe/social-post-main-visual.png",
+        href: "/artimes-luxe",
+        color: "group-hover:text-pink-400",
+        highlights: [
+            { label: "Growth", value: "10k+" },
+            { label: "Timeframe", value: "06 Months" },
+            { label: "Location", value: "Dubai, UAE" },
+            { label: "Audience", value: "Global Elite" }
+        ],
+        contain: true
     }
 ]
 
@@ -94,7 +111,10 @@ export function TestimonialsSection() {
                                 src={story.image}
                                 alt={story.client}
                                 fill
-                                className="object-cover transition-transform duration-700 group-hover:scale-105"
+                                className={cn(
+                                    "transition-transform duration-700 group-hover:scale-105",
+                                    story.contain ? "object-contain p-4" : "object-cover"
+                                )}
                             />
                         </div>
 
