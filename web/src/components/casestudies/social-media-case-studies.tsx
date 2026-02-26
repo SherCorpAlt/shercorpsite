@@ -4,7 +4,18 @@ import Image from "next/image"
 import { motion } from "framer-motion"
 import { Linkedin, ArrowRight } from "lucide-react"
 
-const socialProjects = [
+interface SocialProject {
+    title: string;
+    platform: string;
+    growth: string;
+    image: string;
+    featured: boolean;
+    color: string;
+    href: string;
+    contain?: boolean;
+}
+
+const socialProjects: SocialProject[] = [
     // Main feature
     {
         title: "Rahman Enclave",
@@ -85,7 +96,7 @@ export function SocialMediaCaseStudies() {
                                 fill
                                 className={cn(
                                     "transition-transform duration-700 opacity-60 group-hover:opacity-40",
-                                    (socialProjects[0] as any).contain ? "object-contain p-4" : "object-cover"
+                                    socialProjects[0].contain ? "object-contain p-4" : "object-cover"
                                 )}
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
@@ -118,7 +129,7 @@ export function SocialMediaCaseStudies() {
                                     fill
                                     className={cn(
                                         "transition-transform duration-700 opacity-60 group-hover:opacity-40",
-                                        (project as any).contain ? "object-contain p-4" : "object-cover"
+                                        project.contain ? "object-contain p-4" : "object-cover"
                                     )}
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent" />

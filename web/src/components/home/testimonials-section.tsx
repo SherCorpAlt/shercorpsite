@@ -5,7 +5,20 @@ import Image from "next/image"
 import { ArrowUpRight } from "lucide-react"
 import { cn } from "@/lib/utils"
 
-const successStories = [
+interface SuccessStory {
+    id: number;
+    client: string;
+    industry: string;
+    quote: string;
+    stat: string;
+    image: string;
+    href: string;
+    color: string;
+    highlights: { label: string; value: string }[];
+    contain?: boolean;
+}
+
+const successStories: SuccessStory[] = [
     {
         id: 1,
         client: "Rahman Enclave",
