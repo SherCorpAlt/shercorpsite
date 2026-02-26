@@ -73,7 +73,7 @@ const successStories: SuccessStory[] = [
         industry: "Fashion & Events",
         quote: "SherCorp managed our Instagram content strategy, resulting in 10k new followers in just 6 months with elite visual resonance.",
         stat: "10k Followers",
-        image: "/portfolio/artimes-luxe/social-post-main-visual.png",
+        image: "/portfolio/artimes-luxe/main-post-visual-2.jpeg",
         href: "/artimes-luxe",
         color: "group-hover:text-pink-400",
         highlights: [
@@ -82,7 +82,6 @@ const successStories: SuccessStory[] = [
             { label: "Location", value: "Dubai, UAE" },
             { label: "Audience", value: "Global Elite" }
         ],
-        contain: true
     }
 ]
 

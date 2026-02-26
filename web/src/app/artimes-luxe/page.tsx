@@ -24,7 +24,7 @@ export default function ArtimesLuxePage() {
             <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden pt-20">
                 <div className="absolute inset-0 z-0">
                     <Image
-                        src="/portfolio/artimes-luxe/social-post-main-visual.png"
+                        src="/portfolio/artimes-luxe/main-post-visual-2.jpeg"
                         alt="Artimes Luxe Social Media"
                         fill
                         className="object-cover opacity-40"
@@ -125,10 +125,10 @@ export default function ArtimesLuxePage() {
 
                         <div className="relative h-[600px] rounded-2xl overflow-hidden shadow-2xl border border-white/10 bg-zinc-900">
                             <Image
-                                src="/portfolio/artimes-luxe/social-post-main-visual.png"
+                                src="/portfolio/artimes-luxe/main-post-visual-2.jpeg"
                                 alt="Artimes Luxe Featured Content"
                                 fill
-                                className="object-contain p-4"
+                                className="object-cover"
                             />
                         </div>
                     </div>
@@ -259,7 +259,7 @@ export default function ArtimesLuxePage() {
                     <p className="text-xl text-zinc-400 leading-relaxed">
                         Artimes Luxe is proof that with the right visual strategy, your brand can become a global authority in any niche.
                     </p>
-                    
+
                     <div className="pt-8">
                         <Button size="lg" className="bg-pink-600 hover:bg-pink-700 text-white rounded-full px-8 h-14 text-lg" asChild>
                             <Link href="/contact">Scale Your Social Strategy</Link>

@@ -58,11 +58,10 @@ const socialProjects: SocialProject[] = [
         title: "Artimes Luxe",
         platform: "Instagram Strategy",
         growth: "10k Followers",
-        image: "/portfolio/artimes-luxe/social-post-main-visual.png",
+        image: "/portfolio/artimes-luxe/main-post-visual-2.jpeg",
         featured: false,
         color: "bg-pink-600",
         href: "/artimes-luxe",
-        contain: true
     }
 ]
 
