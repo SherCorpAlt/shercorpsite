@@ -1,5 +1,6 @@
 import { HeroSection } from "@/components/home/hero-section";
 import { ServicesSection } from "@/components/home/services-section";
+import { SocialMediaPostsSection } from "@/components/home/social-media-posts-section";
 import { TestimonialsSection } from "@/components/home/testimonials-section";
 import { TrustBar } from "@/components/home/trust-bar";
 import { ContactSection } from "@/components/home/contact-section";
@@ -14,6 +15,7 @@ export default function Home() {
       <TrustBar />
       <TestimonialsSection />
       <ServicesSection />
+      <SocialMediaPostsSection />
       <ContactSection />
     </div>
   );

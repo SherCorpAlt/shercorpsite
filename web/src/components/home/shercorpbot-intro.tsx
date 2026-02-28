@@ -1,8 +1,8 @@
-"use client"
+﻿"use client"
 
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Bot, User, Sparkles, CheckCircle2, ChevronRight, Layers, Target, Database } from "lucide-react"
+import { Bot, Sparkles, CheckCircle2, ChevronRight, Layers, Target, Database } from "lucide-react"
 import Link from "next/link"
 
 const CHAT_MESSAGES = [
@@ -168,7 +168,7 @@ export function SherCorpBotIntro() {
                                 </div>
                                 <h3 className="font-bold text-white">30-Day Precision</h3>
                                 <p className="text-sm text-gray-400 leading-snug">
-                                    Receive a day-by-day execution plan—from social media hooks to email sequences—tailored to your business stage.
+                                    Receive a day-by-day execution planâ€”from social media hooks to email sequencesâ€”tailored to your business stage.
                                 </p>
                             </div>
 
@@ -190,7 +190,7 @@ export function SherCorpBotIntro() {
                             </div>
                             <h4 className="text-sm font-bold text-cyan-400 uppercase tracking-widest mb-2 font-mono">Why we built this</h4>
                             <p className="text-sm text-gray-300 italic leading-relaxed">
-                                "At SherCorp, we believe the future of digital marketing isn't just creative—it’s computational. SherCorpBot is a live demonstration of our ability to build intelligent, autonomous systems that solve complex business problems."
+                                &quot;At SherCorp, we believe the future of digital marketing isn&apos;t just creative&mdash;it&apos;s computational. SherCorpBot is a live demonstration of our ability to build intelligent, autonomous systems that solve complex business problems.&quot;
                             </p>
                         </div>
 
@@ -216,3 +216,4 @@ export function SherCorpBotIntro() {
         </section>
     )
 }
+

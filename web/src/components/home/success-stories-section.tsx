@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useRef, useState } from "react"
-import { Palette, Video, Megaphone, Search, Cpu, LayoutGrid, ArrowUpRight, TrendingUp, Sparkles } from "lucide-react"
+import { ArrowUpRight, TrendingUp } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import gsap from "gsap"
@@ -166,7 +166,20 @@ export function SuccessStoriesSection() {
     )
 }
 
-function StoryCard({ item, isActive }: { item: any, isActive: boolean }) {
+interface Highlight { label: string; value: string }
+interface StoryItem {
+    id: string
+    client: string
+    industry: string
+    quote: string
+    stat: string
+    image: string
+    href: string
+    color: string
+    highlights: Highlight[]
+}
+
+function StoryCard({ item, isActive }: { item: StoryItem, isActive: boolean }) {
     return (
         <div
             className={`glass-card relative rounded-[2.5rem] p-8 md:p-12 border transition-all duration-500 overflow-hidden ${isActive ? "border-neon-green/40 shadow-[0_0_30px_rgba(34,197,94,0.15)] bg-white/10" : "border-white/10 bg-white/5 opacity-50"
@@ -188,7 +201,7 @@ function StoryCard({ item, isActive }: { item: any, isActive: boolean }) {
                     <h3 className="text-2xl font-bold text-white">{item.client}</h3>
                     <div className={`text-5xl font-black ${item.color} leading-tight`}>{item.stat}</div>
                     <div className="grid grid-cols-3 gap-4">
-                        {item.highlights.map((h: any, i: number) => (
+                        {item.highlights.map((h: Highlight, i: number) => (
                             <div key={i} className="flex flex-col p-3 rounded-xl bg-white/5 border border-white/5">
                                 <span className="text-[10px] uppercase text-zinc-400 mb-1 leading-none">{h.label}</span>
                                 <span className="text-base font-bold text-white leading-none whitespace-nowrap">{h.value}</span>
