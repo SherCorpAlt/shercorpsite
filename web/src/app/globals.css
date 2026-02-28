@@ -35,7 +35,19 @@
   --animate-marquee: marquee 80s linear infinite;
   --animate-marquee-reverse: marquee-reverse 25s linear infinite;
   --animate-pulse-green: pulse-green 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  --animate-shimmer: shimmer 3s infinite;
   --animate-liquid-glow: liquid-glow 3s linear infinite;
+
+  @keyframes shimmer {
+    0% {
+      transform: translateX(-100%) skewX(-20deg);
+    }
+
+    50%,
+    100% {
+      transform: translateX(100%) skewX(-20deg);
+    }
+  }
 
   @keyframes marquee {
     from {
@@ -174,6 +186,11 @@
 
 @utility neon-border {
   @apply border border-neon-green shadow-[0_0_10px_#39FF14];
+}
+
+@utility outline-text {
+  -webkit-text-stroke: 1px var(--neon-green);
+  color: transparent;
 }
 
 /* Enforce site-wide 80% content width */
