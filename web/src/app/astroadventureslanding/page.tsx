@@ -1,3 +1,5 @@
+"use client";
+
 import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -5,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { useState, useRef } from "react";
 import {
     Telescope,
     BookOpen,
@@ -16,16 +19,63 @@ import {
     Phone,
     Calendar,
     CheckCircle2,
-    ArrowRight
+    ArrowRight,
+    Loader2
 } from "lucide-react";
 import { RecaptchaV2 } from "@/components/ui/recaptcha-v2";
 
-export const metadata: Metadata = {
-    title: "Astro Adventures | Learning the Universe",
-    description: "Inspiring curious minds through hands-on astronomy sessions, lectures, and outdoor observation experiences.",
-};
-
 export default function AstroAdventuresPage() {
+    const [submitting, setSubmitting] = useState(false);
+    const [success, setSuccess] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+
+    const regRecaptchaRef = useRef<{ getValue: () => string | null; reset: () => void }>(null);
+    const memRecaptchaRef = useRef<{ getValue: () => string | null; reset: () => void }>(null);
+
+    const handleFormSubmit = async (e: React.FormEvent, type: 'registration' | 'membership') => {
+        e.preventDefault();
+        setSubmitting(true);
+        setError(null);
+
+        const recaptchaRef = type === 'registration' ? regRecaptchaRef : memRecaptchaRef;
+        const token = recaptchaRef.current?.getValue();
+
+        if (!token) {
+            setError("Please complete the reCAPTCHA.");
+            setSubmitting(false);
+            return;
+        }
+
+        try {
+            const { verifyRecaptchaAction } = await import("@/app/actions/recaptcha-action");
+            const result = await verifyRecaptchaAction(token);
+
+            if (result.success) {
+                setSuccess(true);
+                recaptchaRef.current?.reset();
+            } else {
+                setError(result.message || "Verification failed.");
+            }
+        } catch (err) {
+            console.error("Submission error:", err);
+            setError("An error occurred. Please try again.");
+        } finally {
+            setSubmitting(false);
+        }
+    };
+
+    if (success) {
+        return (
+            <div className="min-h-screen bg-black text-white flex items-center justify-center p-4">
+                <Card className="glass-card p-12 text-center max-w-lg">
+                    <CheckCircle2 className="w-16 h-16 text-neon-green mx-auto mb-6" />
+                    <h2 className="text-3xl font-bold mb-4">Request Received!</h2>
+                    <p className="text-gray-400 mb-8">Thank you for your interest in Astro Adventures. A member of our team will contact you shortly.</p>
+                    <Button onClick={() => setSuccess(false)} className="bg-neon-green text-black font-bold">Back to Page</Button>
+                </Card>
+            </div>
+        );
+    }
     return (
         <div className="min-h-screen bg-black text-foreground font-sans selection:bg-purple-500/30">
 
@@ -179,31 +229,33 @@ export default function AstroAdventuresPage() {
 
                     <Card className="bg-zinc-900 border-zinc-800 shadow-xl">
                         <CardContent className="p-8">
-                            <form className="space-y-6">
+                            <form onSubmit={(e) => handleFormSubmit(e, 'registration')} className="space-y-6">
+                                {error && <p className="text-red-500 text-sm text-center">{error}</p>}
                                 <div className="grid md:grid-cols-2 gap-6">
                                     <div className="space-y-2">
                                         <label className="text-sm font-medium text-zinc-300">Name</label>
-                                        <Input placeholder="Your Full Name" className="bg-black/50 border-zinc-700 focus:border-purple-500 text-white" />
+                                        <Input placeholder="Your Full Name" className="bg-black/50 border-zinc-700 focus:border-purple-500 text-white" required />
                                     </div>
                                     <div className="space-y-2">
                                         <label className="text-sm font-medium text-zinc-300">Email Address</label>
-                                        <Input type="email" placeholder="email@example.com" className="bg-black/50 border-zinc-700 focus:border-purple-500 text-white" />
+                                        <Input type="email" placeholder="email@example.com" className="bg-black/50 border-zinc-700 focus:border-purple-500 text-white" required />
                                     </div>
                                 </div>
                                 <div className="space-y-2">
                                     <label className="text-sm font-medium text-zinc-300">Contact Number</label>
-                                    <Input type="tel" placeholder="+92 ..." className="bg-black/50 border-zinc-700 focus:border-purple-500 text-white" />
+                                    <Input type="tel" placeholder="+92 ..." className="bg-black/50 border-zinc-700 focus:border-purple-500 text-white" required />
                                 </div>
                                 <div className="space-y-2">
                                     <label className="text-sm font-medium text-zinc-300">Event Details</label>
                                     <Textarea
                                         placeholder="Please provide details about the venue, expected audience size, and preferred dates..."
                                         className="min-h-[120px] bg-black/50 border-zinc-700 focus:border-purple-500 text-white"
+                                        required
                                     />
                                 </div>
-                                <RecaptchaV2 />
-                                <Button className="w-full h-12 bg-purple-600 hover:bg-purple-700 text-lg rounded-md text-white">
-                                    ✅ Submit Request
+                                <RecaptchaV2 ref={regRecaptchaRef} />
+                                <Button type="submit" disabled={submitting} className="w-full h-12 bg-purple-600 hover:bg-purple-700 text-lg rounded-md text-white">
+                                    {submitting ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : "✅ Submit Request"}
                                 </Button>
                             </form>
                         </CardContent>
@@ -309,16 +361,17 @@ export default function AstroAdventuresPage() {
                             <CardTitle className="text-white text-2xl">Become a Member</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <form className="space-y-4">
+                            <form onSubmit={(e) => handleFormSubmit(e, 'membership')} className="space-y-4">
+                                {error && <p className="text-red-500 text-sm text-center">{error}</p>}
                                 <Input placeholder="Email Address (required)" className="bg-black/50 border-white/20 text-white placeholder:text-zinc-500" required />
                                 <div className="grid grid-cols-2 gap-4">
                                     <Input placeholder="First Name" className="bg-black/50 border-white/20 text-white placeholder:text-zinc-500" />
                                     <Input placeholder="Last Name" className="bg-black/50 border-white/20 text-white placeholder:text-zinc-500" />
                                 </div>
                                 <Input placeholder="Phone Number" className="bg-black/50 border-white/20 text-white placeholder:text-zinc-500" />
-                                <RecaptchaV2 />
-                                <Button className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold h-12 shadow-lg shadow-purple-500/20">
-                                    🌌 Sign Up
+                                <RecaptchaV2 ref={memRecaptchaRef} />
+                                <Button type="submit" disabled={submitting} className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold h-12 shadow-lg shadow-purple-500/20">
+                                    {submitting ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : "🌌 Sign Up"}
                                 </Button>
                             </form>
                         </CardContent>

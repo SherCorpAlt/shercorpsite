@@ -4,10 +4,18 @@ export async function verifyRecaptcha(token: string | null) {
     }
 
     const secretKey = process.env.RECAPTCHA_SECRET_KEY;
+    const isProd = process.env.NODE_ENV === "production";
+
     if (!secretKey) {
-        console.warn("RECAPTCHA_SECRET_KEY is not set in environment variables. Skipping verification for development.");
+        if (isProd) {
+            console.error("RECAPTCHA_SECRET_KEY is missing in production!");
+            return { success: false, message: "Server configuration error. Please try again later." };
+        }
+        console.warn("RECAPTCHA_SECRET_KEY is missing. Skipping verification for development.");
         return { success: true };
     }
+
+    console.log("Attempting reCAPTCHA verification...");
 
     try {
         const response = await fetch("https://www.google.com/recaptcha/api/siteverify", {

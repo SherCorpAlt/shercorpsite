@@ -17,6 +17,35 @@ export default function SherCorpBotPage() {
     const [emailInput, setEmailInput] = useState("");
     const [showNamePrompt, setShowNamePrompt] = useState(false);
     const [isVerified, setIsVerified] = useState(false);
+    const [verifying, setVerifying] = useState(false);
+    const [recaptchaError, setRecaptchaError] = useState<string | null>(null);
+
+    const handleRecaptchaVerify = async (token: string | null) => {
+        if (!token) {
+            setIsVerified(false);
+            return;
+        }
+
+        setVerifying(true);
+        setRecaptchaError(null);
+
+        try {
+            const { verifyRecaptchaAction } = await import("@/app/actions/recaptcha-action");
+            const result = await verifyRecaptchaAction(token);
+            if (result.success) {
+                setIsVerified(true);
+            } else {
+                setRecaptchaError(result.message || "reCAPTCHA verification failed.");
+                setIsVerified(false);
+            }
+        } catch (error) {
+            console.error("Recaptcha verification error:", error);
+            setRecaptchaError("Verification error. Please try again.");
+            setIsVerified(false);
+        } finally {
+            setVerifying(false);
+        }
+    };
 
     return (
         <div className={`flex flex-col pt-32 pb-20 w-full ${isStarted ? 'gap-8' : 'gap-24'}`}>
@@ -92,7 +121,10 @@ export default function SherCorpBotPage() {
                             {!isVerified ? (
                                 <div className="space-y-6">
                                     <p className="text-muted-foreground">Please verify you are human to initialize SherCorpBot.</p>
-                                    <RecaptchaV2 onChange={(token) => setIsVerified(!!token)} />
+                                    {recaptchaError && <p className="text-red-500 text-sm">{recaptchaError}</p>}
+                                    <div className={verifying ? "opacity-50 pointer-events-none" : ""}>
+                                        <RecaptchaV2 onChange={handleRecaptchaVerify} />
+                                    </div>
                                 </div>
                             ) : (
                                 <Button
