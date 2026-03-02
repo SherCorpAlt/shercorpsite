@@ -8,6 +8,7 @@ import { Footer } from "@/components/layout/Footer";
 import { ParticleBackground } from "@/components/ui/particle-background";
 import { FluidCursor } from "@/components/ui/fluid-cursor";
 import { FloatingWhatsApp } from "@/components/ui/floating-whatsapp";
+import { Analytics } from "@vercel/analytics/next";
 
 
 const inter = Inter({
@@ -54,6 +55,7 @@ export default function RootLayout({
           <div className="fixed inset-0 -z-50 pointer-events-none">
             <ParticleBackground />
           </div>
+          <Analytics />
 
         </ThemeProvider>
       </body>
