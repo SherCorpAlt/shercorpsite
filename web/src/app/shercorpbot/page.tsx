@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { motion } from "framer-motion";
 import { Bot, Sparkles, Zap, BrainCircuit, ArrowRight } from "lucide-react";
 import { ChatInterface } from "@/components/shercorpbot/chat-interface";
+import { RecaptchaV2 } from "@/components/ui/recaptcha-v2";
 
 export default function SherCorpBotPage() {
     const [isStarted, setIsStarted] = useState(false);
@@ -15,6 +16,7 @@ export default function SherCorpBotPage() {
     const [nameInput, setNameInput] = useState("");
     const [emailInput, setEmailInput] = useState("");
     const [showNamePrompt, setShowNamePrompt] = useState(false);
+    const [isVerified, setIsVerified] = useState(false);
 
     return (
         <div className={`flex flex-col pt-32 pb-20 w-full ${isStarted ? 'gap-8' : 'gap-24'}`}>
@@ -87,12 +89,19 @@ export default function SherCorpBotPage() {
                                 Initialize SherCorpBot to generate your comprehensive marketing strategy and social assets in seconds.
                             </p>
 
-                            <Button
-                                onClick={() => setShowNamePrompt(true)}
-                                className="bg-neon-green text-black font-bold h-14 px-8 text-lg hover:bg-neon-green/80 hover:scale-105 transition-all duration-300 shadow-[0_0_20px_rgba(57,255,20,0.4)] relative z-10"
-                            >
-                                Start SherCorpBot Analysis <ArrowRight className="ml-2 w-5 h-5" />
-                            </Button>
+                            {!isVerified ? (
+                                <div className="space-y-6">
+                                    <p className="text-muted-foreground">Please verify you are human to initialize SherCorpBot.</p>
+                                    <RecaptchaV2 onChange={(token) => setIsVerified(!!token)} />
+                                </div>
+                            ) : (
+                                <Button
+                                    onClick={() => setShowNamePrompt(true)}
+                                    className="bg-neon-green text-black font-bold h-14 px-8 text-lg hover:bg-neon-green/80 hover:scale-105 transition-all duration-300 shadow-[0_0_20px_rgba(57,255,20,0.4)] relative z-10"
+                                >
+                                    Start SherCorpBot Analysis <ArrowRight className="ml-2 w-5 h-5" />
+                                </Button>
+                            )}
 
                             <p className="mt-6 text-sm text-muted-foreground/60 uppercase tracking-widest font-mono">
                                 System Verified • Awaiting Input

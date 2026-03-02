@@ -17,40 +17,14 @@ export async function submitContactForm(
     const email = formData.get("email") as string;
     const subject = formData.get("subject") as string;
     const message = formData.get("message") as string;
-    // Verify token logic removed for debugging purposes
-    /*
-    const token = formData.get("recaptchaToken") as string;
+    const recaptchaToken = formData.get("g-recaptcha-response") as string;
+    const { verifyRecaptcha } = await import("@/lib/recaptcha");
+    const recaptchaResult = await verifyRecaptcha(recaptchaToken);
 
-    if (!token) {
-        return { success: false, message: "Anti-spam verification failed. Please try again." };
+    if (!recaptchaResult.success) {
+        return { success: false, message: recaptchaResult.message || "reCAPTCHA verification failed." };
     }
 
-    try {
-        const verificationResponse = await fetch("https://www.google.com/recaptcha/api/siteverify", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
-            },
-            body: `secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${token}`,
-        });
-
-        const verificationResult = await verificationResponse.json();
-
-        if (!verificationResult.success || verificationResult.score < 0.5) {
-            console.warn("Recaptcha verification failed:", verificationResult);
-            return {
-                success: false,
-                message: "Our systems detected unusual activity. Please try again later.",
-            };
-        }
-    } catch (error) {
-        console.error("Recaptcha verification error:", error);
-        return {
-            success: false,
-            message: "Anti-spam verification error. Please try again.",
-        };
-    }
-    */
 
     if (!name || !email || !message) {
         return { success: false, message: "Please fill in all required fields." };

@@ -18,6 +18,7 @@ import {
     CheckCircle2,
     ArrowRight
 } from "lucide-react";
+import { RecaptchaV2 } from "@/components/ui/recaptcha-v2";
 
 export const metadata: Metadata = {
     title: "Astro Adventures | Learning the Universe",
@@ -200,6 +201,7 @@ export default function AstroAdventuresPage() {
                                         className="min-h-[120px] bg-black/50 border-zinc-700 focus:border-purple-500 text-white"
                                     />
                                 </div>
+                                <RecaptchaV2 />
                                 <Button className="w-full h-12 bg-purple-600 hover:bg-purple-700 text-lg rounded-md text-white">
                                     ✅ Submit Request
                                 </Button>
@@ -314,6 +316,7 @@ export default function AstroAdventuresPage() {
                                     <Input placeholder="Last Name" className="bg-black/50 border-white/20 text-white placeholder:text-zinc-500" />
                                 </div>
                                 <Input placeholder="Phone Number" className="bg-black/50 border-white/20 text-white placeholder:text-zinc-500" />
+                                <RecaptchaV2 />
                                 <Button className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold h-12 shadow-lg shadow-purple-500/20">
                                     🌌 Sign Up
                                 </Button>

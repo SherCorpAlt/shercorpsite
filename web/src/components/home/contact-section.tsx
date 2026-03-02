@@ -10,7 +10,7 @@ import { Card } from "@/components/ui/card"
 import { useRef, useEffect, useCallback, startTransition, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { AlertCircle, CheckCircle2 } from "lucide-react";
-// import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
+import ReCAPTCHA from "react-google-recaptcha";
 
 function SubmitButton() {
     const { pending } = useFormStatus();
@@ -48,8 +48,11 @@ export function ContactSection() {
     useEffect(() => {
         if (state.success && formRef.current) {
             formRef.current.reset();
+            // Reset recaptcha if needed (though reset() might not handle it)
         }
     }, [state.success]);
+
+    const recaptchaRef = useRef<ReCAPTCHA>(null);
 
     return (
         <section className="py-24 relative overflow-hidden" id="contact">
@@ -100,6 +103,14 @@ export function ContactSection() {
                         <div className="space-y-2">
                             <label htmlFor="message" className="text-sm font-medium">Message</label>
                             <Textarea name="message" id="message" placeholder="Tell us about your project..." required className="min-h-[150px] bg-white/5 border-white/10 focus:border-neon-green/50 placeholder:text-muted-foreground/50" />
+                        </div>
+
+                        <div className="flex justify-center py-2">
+                            <ReCAPTCHA
+                                ref={recaptchaRef}
+                                sitekey="6LcvyXwsAAAAAPGR8jWlPtWrwsMNz6zvfpge7i5o"
+                                theme="dark"
+                            />
                         </div>
 
                         <SubmitButton />
