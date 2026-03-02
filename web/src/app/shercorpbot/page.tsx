@@ -135,9 +135,11 @@ export default function SherCorpBotPage() {
                                 </Button>
                             )}
 
-                            <p className="mt-6 text-sm text-muted-foreground/60 uppercase tracking-widest font-mono">
-                                System Verified • Awaiting Input
-                            </p>
+                            {isVerified && (
+                                <p className="mt-6 text-sm text-neon-green/60 uppercase tracking-widest font-mono">
+                                    ✓ System Verified • Awaiting Input
+                                </p>
+                            )}
                         </Card>
                     </motion.div>
                 )}

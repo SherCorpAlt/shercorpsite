@@ -35,24 +35,33 @@ export function ContactSection() {
     const [state, formAction] = useActionState(submitContactForm, initialState);
     const [clientError, setClientError] = useState<string | null>(null);
 
-    // Simplified submit handler directly calling action since reCAPTCHA is disabled
     const handleFormSubmit = useCallback((formData: FormData) => {
         setClientError(null);
+
+        // Read the reCAPTCHA token from the widget
+        const token = recaptchaRef.current?.getValue();
+        if (!token) {
+            setClientError("Please complete the reCAPTCHA verification.");
+            return;
+        }
+
+        // Append the token so the server action can verify it with Google
+        formData.append("g-recaptcha-response", token);
+
         startTransition(() => {
             formAction(formData);
         });
     }, [formAction]);
 
     const formRef = useRef<HTMLFormElement>(null);
+    const recaptchaRef = useRef<ReCAPTCHA>(null);
 
     useEffect(() => {
         if (state.success && formRef.current) {
             formRef.current.reset();
-            // Reset recaptcha if needed (though reset() might not handle it)
+            recaptchaRef.current?.reset(); // Reset the reCAPTCHA widget after success
         }
     }, [state.success]);
-
-    const recaptchaRef = useRef<ReCAPTCHA>(null);
 
     return (
         <section className="py-24 relative overflow-hidden" id="contact">
