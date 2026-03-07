@@ -193,7 +193,7 @@ export function ChatInterface({ userName, userEmail }: ChatInterfaceProps) {
                 transition={{ duration: 0.5 }}
                 className="w-full"
             >
-                <StrategyResults strategy={strategy} userEmail={userEmail} logoBase64={logoBase64} />
+                <StrategyResults strategy={strategy} userEmail={userEmail} />
             </motion.div>
         );
     }

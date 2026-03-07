@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -27,7 +27,6 @@ export interface StrategyData {
 interface StrategyResultsProps {
     strategy: StrategyData;
     userEmail: string;
-    logoBase64?: string | null;
 }
 
 const containerVariants = {
@@ -43,17 +42,8 @@ const itemVariants = {
     show: { opacity: 1, y: 0, transition: { duration: 0.5 } }
 };
 
-export function StrategyResults({ strategy, userEmail, logoBase64 }: StrategyResultsProps) {
+export function StrategyResults({ strategy, userEmail }: StrategyResultsProps) {
     const [expandedRoadmap, setExpandedRoadmap] = useState(false);
-
-    useEffect(() => {
-        fetch('/api/email/send-strategy', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email: userEmail, strategy, logoBase64 })
-        }).catch(err => console.error("Failed to sync strategy email:", err));
-    }, [userEmail, strategy, logoBase64]);
-
     const roadmapItems = expandedRoadmap
         ? strategy.growth_roadmap
         : strategy.growth_roadmap.slice(0, 3);
