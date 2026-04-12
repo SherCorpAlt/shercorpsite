@@ -7,7 +7,7 @@ const google = createGoogleGenerativeAI({
     apiKey: process.env.GEMINI_API_KEY,
 });
 
-export const maxDuration = 30;
+export const maxDuration = 60;
 
 export async function POST(req: Request) {
     const { messages, userName } = await req.json();
@@ -15,7 +15,7 @@ export async function POST(req: Request) {
     const systemPrompt = INTERVIEWER_PROMPT.replace('[Name]', userName || 'User');
 
     const result = streamText({
-        model: google('gemini-2.5-pro'),
+        model: google('gemini-2.5-flash'),
         system: systemPrompt,
         messages,
     });
