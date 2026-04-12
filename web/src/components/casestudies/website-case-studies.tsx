@@ -36,6 +36,16 @@ const projects = [
         stats: ["98/100 Speed", "60% Engagement", "1000+ Leads"],
         color: "bg-orange-500",
         href: "/Wavecomm"
+    },
+    {
+        title: "Maas Harvests",
+        category: "Shopify E-Commerce",
+        description: "Transforming a 20+ year-old honey brand into a thriving Shopify storefront. 3.8x revenue growth and 4.2% conversion rate.",
+        icon: Smartphone,
+        image: "/portfolio/maas-harvest/storefront-screenshot.png",
+        stats: ["3.8x Revenue", "4.2% Conversion", "68% Repeat Buyers"],
+        color: "bg-amber-500",
+        href: "/shopify-expertise"
     }
 ]
 

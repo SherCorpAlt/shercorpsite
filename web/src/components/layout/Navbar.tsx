@@ -36,6 +36,7 @@ export function Navbar() {
                 { name: "LAAM (Octane)", href: "/laam-octane" },
                 { name: "LAAM Seller Central", href: "/laamsellercentral" },
                 { name: "Wavecomm", href: "/Wavecomm" },
+                { name: "Maas Harvests (Shopify)", href: "/shopify-expertise" },
             ]
         },
         { name: "About Us", href: "/about" },
