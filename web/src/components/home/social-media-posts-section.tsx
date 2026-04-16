@@ -29,6 +29,12 @@ const posts: PostItem[] = [
         client: "Artimes Luxe",
     },
     {
+        src: "/portfolio/maas-harvest/2.jpg",
+        alt: "Shopify Expertise - Maas Harvests",
+        href: "/shopify-expertise",
+        client: "Maas Harvests",
+    },
+    {
         src: "/sm-posts/Wavecomm Ads 1.jpg",
         alt: "Wavecomm Ads Campaign — Creative 1",
         href: "/Wavecomm",
@@ -58,12 +64,6 @@ const posts: PostItem[] = [
         alt: "SherCorp Social Media Creative",
         href: null,
         client: "SherCorp",
-    },
-    {
-        src: "/portfolio/maas-harvest/2.jpg",
-        alt: "Shopify Expertise - Maas Harvests",
-        href: "/shopify-expertise",
-        client: "Maas Harvests",
     },
 ]
 

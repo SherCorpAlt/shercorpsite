@@ -82,6 +82,22 @@ const successStories: SuccessStory[] = [
             { label: "Location", value: "Dubai, UAE" },
             { label: "Audience", value: "Global Elite" }
         ],
+    },
+    {
+        id: 5,
+        client: "Maas Harvests",
+        industry: "E-Commerce",
+        quote: "SherCorp leveraged Shopify to transform a 20+ year-old brand into a premium, conversion-optimized digital storefront.",
+        stat: "3.8x Revenue",
+        image: "/portfolio/maas-harvest/storefront-screenshot.png",
+        href: "/shopify-expertise",
+        color: "group-hover:text-amber-400",
+        highlights: [
+            { label: "Growth", value: "3.8x" },
+            { label: "Conversion", value: "4.2%" },
+            { label: "Loyalty", value: "68%" },
+            { label: "Load Time", value: "< 1.8s" }
+        ],
     }
 ]
 
