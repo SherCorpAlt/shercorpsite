@@ -73,6 +73,21 @@ const successStories = [
             { label: "Location", value: "Dubai, UAE" },
             { label: "Timeframe", value: "06 Months" }
         ],
+    },
+    {
+        id: "t5",
+        client: "Maas Harvests",
+        industry: "E-Commerce",
+        quote: "Transformed a 20+ year-old heritage brand into an e-commerce powerhouse with custom Shopify architecture.",
+        stat: "3.8x Revenue",
+        image: "/portfolio/maas-harvest/storefront-screenshot.png",
+        href: "/shopify-expertise",
+        color: "text-amber-400",
+        highlights: [
+            { label: "Growth", value: "3.8x" },
+            { label: "Conversion", value: "4.2%" },
+            { label: "Loyalty", value: "68%" }
+        ],
     }
 ]
 

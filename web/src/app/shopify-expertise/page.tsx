@@ -443,7 +443,7 @@ export default function ShopifyExpertisePage() {
                     <div className="grid lg:grid-cols-2 gap-16 items-center">
                         <div className="order-2 lg:order-1 relative rounded-2xl overflow-hidden shadow-2xl shadow-amber-500/10 border border-white/10">
                             <Image
-                                src="/portfolio/maas-harvest/product-page.png"
+                                src="/portfolio/maas-harvest/2.jpg"
                                 alt="Product Page Design"
                                 width={900}
                                 height={600}

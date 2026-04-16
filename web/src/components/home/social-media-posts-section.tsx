@@ -60,10 +60,10 @@ const posts: PostItem[] = [
         client: "SherCorp",
     },
     {
-        src: "/sm-posts/9.jpg",
-        alt: "SherCorp Social Media Creative",
-        href: null,
-        client: "SherCorp",
+        src: "/portfolio/maas-harvest/2.jpg",
+        alt: "Shopify Expertise - Maas Harvests",
+        href: "/shopify-expertise",
+        client: "Maas Harvests",
     },
 ]
 
