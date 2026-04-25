@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react"
 import Image from "next/image"
-import { motion, AnimatePresence } from "framer-motion"
+import { motion, AnimatePresence, type Variants } from "framer-motion"
 import { ChevronRight } from "lucide-react"
 
 // ─── Slide Data ───────────────────────────────────────────────────────────────
@@ -34,48 +34,48 @@ const slides = [
 ]
 
 // ─── Animation Variants ───────────────────────────────────────────────────────
-const headingVariants = {
+const headingVariants: Variants = {
     enter: { y: 60, opacity: 0, filter: "blur(8px)" },
     center: {
         y: 0, opacity: 1, filter: "blur(0px)",
-        transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] },
+        transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
     },
     exit: {
         y: -40, opacity: 0, filter: "blur(6px)",
-        transition: { duration: 0.4, ease: [0.55, 0, 1, 0.45] },
+        transition: { duration: 0.4, ease: [0.55, 0, 1, 0.45] as [number, number, number, number] },
     },
 }
 
-const bodyVariants = {
+const bodyVariants: Variants = {
     enter: { y: 30, opacity: 0 },
     center: {
         y: 0, opacity: 1,
-        transition: { duration: 0.6, delay: 0.15, ease: [0.22, 1, 0.36, 1] },
+        transition: { duration: 0.6, delay: 0.15, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
     },
     exit: {
         y: -20, opacity: 0,
-        transition: { duration: 0.3, ease: [0.55, 0, 1, 0.45] },
+        transition: { duration: 0.3, ease: [0.55, 0, 1, 0.45] as [number, number, number, number] },
     },
 }
 
-const indexVariants = {
+const indexVariants: Variants = {
     enter: { opacity: 0, x: -20 },
     center: {
         opacity: 1, x: 0,
-        transition: { duration: 0.5, delay: 0.05, ease: [0.22, 1, 0.36, 1] },
+        transition: { duration: 0.5, delay: 0.05, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
     },
     exit: { opacity: 0, x: 20, transition: { duration: 0.25 } },
 }
 
-const imageVariants = {
+const imageVariants: Variants = {
     enter: { scale: 1.08, opacity: 0 },
     center: {
         scale: 1, opacity: 1,
-        transition: { duration: 0.85, ease: [0.22, 1, 0.36, 1] },
+        transition: { duration: 0.85, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
     },
     exit: {
         scale: 0.96, opacity: 0,
-        transition: { duration: 0.45, ease: [0.55, 0, 1, 0.45] },
+        transition: { duration: 0.45, ease: [0.55, 0, 1, 0.45] as [number, number, number, number] },
     },
 }
 
