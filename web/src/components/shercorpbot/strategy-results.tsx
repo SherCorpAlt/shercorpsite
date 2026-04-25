@@ -7,7 +7,7 @@ import { Card } from "@/components/ui/card";
 import {
     CheckCircle2, Target, Calendar, ImageIcon,
     Zap, Mail, RefreshCw, ChevronDown, ChevronUp,
-    ArrowRight, TrendingUp
+    ArrowRight, TrendingUp, AlertCircle, Loader2
 } from "lucide-react";
 
 interface RoadmapItem {
@@ -45,13 +45,29 @@ const itemVariants = {
 
 export function StrategyResults({ strategy, userEmail, logoBase64 }: StrategyResultsProps) {
     const [expandedRoadmap, setExpandedRoadmap] = useState(false);
+    const [emailStatus, setEmailStatus] = useState<'sending' | 'sent' | 'failed'>('sending');
 
     useEffect(() => {
-        fetch('/api/email/send-strategy', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email: userEmail, strategy, logoBase64 })
-        }).catch(err => console.error("Failed to sync strategy email:", err));
+        const sendEmail = async () => {
+            try {
+                const res = await fetch('/api/email/send-strategy', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: userEmail, strategy, logoBase64 }),
+                });
+                if (!res.ok) {
+                    const data = await res.json();
+                    console.error('[StrategyResults] Email API error:', data);
+                    setEmailStatus('failed');
+                } else {
+                    setEmailStatus('sent');
+                }
+            } catch (err) {
+                console.error('[StrategyResults] Email fetch failed:', err);
+                setEmailStatus('failed');
+            }
+        };
+        sendEmail();
     }, [userEmail, strategy, logoBase64]);
 
     const roadmapItems = expandedRoadmap
@@ -74,9 +90,23 @@ export function StrategyResults({ strategy, userEmail, logoBase64 }: StrategyRes
                     </div>
                     <div className="text-center sm:text-left">
                         <h2 className="text-xl font-bold text-white mb-1">Strategy Successfully Generated!</h2>
-                        <p className="text-sm text-white/60">
-                            A full copy has been emailed to <span className="text-neon-green font-medium">{userEmail}</span>. Check your spam folder if needed.
-                        </p>
+                        {emailStatus === 'sending' && (
+                            <p className="text-sm text-white/50 flex items-center gap-1.5">
+                                <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                                Sending a copy to <span className="text-white/80 font-medium">{userEmail}</span>...
+                            </p>
+                        )}
+                        {emailStatus === 'sent' && (
+                            <p className="text-sm text-white/60">
+                                A full copy has been emailed to <span className="text-neon-green font-medium">{userEmail}</span>. Check your spam folder if needed.
+                            </p>
+                        )}
+                        {emailStatus === 'failed' && (
+                            <p className="text-sm text-red-400 flex items-center gap-1.5">
+                                <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+                                Email delivery failed. Please contact us at <span className="font-medium">contact@khawarsher.com</span>
+                            </p>
+                        )}
                     </div>
                     <div className="sm:ml-auto shrink-0">
                         <Button

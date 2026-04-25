@@ -11,59 +11,59 @@ export async function POST(req: Request) {
             return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
         }
 
-        const attachments = [];
-
-        // Logo
+        // Logo — still embedded as base64 inline attachment (user uploaded, not a URL)
+        const attachments: { filename: string; content: string; content_id: string; disposition: string }[] = [];
         let logoHtml = '';
         if (logoBase64) {
             const logoData = logoBase64.split(',')[1];
-            attachments.push({
-                filename: 'logo.png',
-                content: logoData,
-                content_id: 'logo-img',
-                disposition: 'inline'
-            });
-            logoHtml = `<div style="text-align: center; margin-bottom: 20px;"><img src="cid:logo-img" alt="Your Logo" style="max-height: 80px; width: auto;" /></div>`;
-        }
-
-        const roadmapHtml = strategy.growth_roadmap.map((item: { day: string; task: string }) => `
-            <div style="margin-bottom: 12px; border-left: 3px solid #39FF14; padding-left: 12px;">
-                <strong style="color:#39FF14;">${item.day}:</strong>
-                <span style="color:#333;"> ${item.task}</span>
-            </div>
-        `).join('');
-
-        let imagesHtml = '';
-        if (strategy.image_urls && strategy.image_urls.length > 0) {
-            imagesHtml = strategy.image_urls.map((base64Url: string, i: number) => {
-                if (!base64Url) return '';
-                const base64Data = base64Url.split(',')[1];
-                const contentId = `image-${i}`;
+            if (logoData) {
                 attachments.push({
-                    filename: `social-post-${i + 1}.jpg`,
-                    content: base64Data,
-                    content_id: contentId,
-                    disposition: 'inline'
+                    filename: 'logo.png',
+                    content: logoData,
+                    content_id: 'logo-img',
+                    disposition: 'inline',
                 });
-                return `
-                <div style="flex: 1; min-width: 260px; padding: 8px;">
-                    <img src="cid:${contentId}" alt="AI Social Post ${i + 1}" style="width:100%; border-radius:8px; border:1px solid #ddd;" />
-                    <p style="font-size:11px; color:#888; text-align:center; margin-top:4px;">Post ${i + 1} — Click to view full resolution</p>
-                </div>
-                `;
-            }).join('');
-        } else {
-            imagesHtml = '<p style="color: #888; font-style: italic;">Images not available.</p>';
+                logoHtml = `<div style="text-align: center; margin-bottom: 20px;"><img src="cid:logo-img" alt="Your Logo" style="max-height: 80px; width: auto;" /></div>`;
+            }
         }
 
-        const upsellHtml = strategy.upsell_hooks.map((hook: string) => `<li style="margin-bottom:8px;">${hook}</li>`).join('');
+        const roadmapHtml = strategy.growth_roadmap
+            .map((item: { day: string; task: string }) => `
+                <div style="margin-bottom: 12px; border-left: 3px solid #39FF14; padding-left: 12px;">
+                    <strong style="color:#39FF14;">${item.day}:</strong>
+                    <span style="color:#333;"> ${item.task}</span>
+                </div>`)
+            .join('');
+
+        // Images: image_urls are relative proxy paths (/api/proxy-image?prompt=...) — unusable in email.
+        // Instead, rebuild direct Pollinations URLs from image_prompts for external loading in email clients.
+        // Email clients are NOT subject to CORS, so external image URLs load fine.
+        let imagesHtml = '<p style="color: #888; font-style: italic;">Images not available.</p>';
+        if (strategy.image_prompts && strategy.image_prompts.length > 0) {
+            const emailImageUrls = strategy.image_prompts.map((prompt: string) => {
+                const encoded = encodeURIComponent(prompt);
+                const seed = Math.floor(Math.random() * 99999);
+                return `https://image.pollinations.ai/prompt/${encoded}?width=800&height=800&nologo=true&model=flux&seed=${seed}`;
+            });
+            imagesHtml = emailImageUrls
+                .map((url: string, i: number) => `
+                    <div style="flex: 1; min-width: 260px; padding: 8px;">
+                        <img src="${url}" alt="AI Social Post ${i + 1}" style="width:100%; border-radius:8px; border:1px solid #ddd;" />
+                        <p style="font-size:11px; color:#888; text-align:center; margin-top:4px;">Post ${i + 1}</p>
+                    </div>`)
+                .join('');
+        }
+
+        const upsellHtml = strategy.upsell_hooks
+            .map((hook: string) => `<li style="margin-bottom:8px;">${hook}</li>`)
+            .join('');
 
         const emailHtml = `
             <!DOCTYPE html>
             <html>
             <body style="font-family: 'Helvetica Neue', Arial, sans-serif; line-height: 1.6; color: #333; background-color: #f9f9f9; padding: 20px; margin:0;">
                 <div style="max-width: 680px; margin: 0 auto; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-                    
+
                     <!-- Header -->
                     <div style="background: #000; color: #fff; padding: 32px; text-align: center;">
                         <h1 style="color: #39FF14; margin: 0; font-size: 26px; letter-spacing: -0.5px;">SherCorp Digital Strategy</h1>
@@ -90,9 +90,7 @@ export async function POST(req: Request) {
                         <!-- 30-Day Roadmap -->
                         <div style="margin-bottom: 28px;">
                             <h3 style="color: #111; border-bottom: 2px solid #39FF14; padding-bottom: 6px; font-size:16px;">🗓️ 30-Day Execution Plan</h3>
-                            <div style="margin-top: 14px;">
-                                ${roadmapHtml}
-                            </div>
+                            <div style="margin-top: 14px;">${roadmapHtml}</div>
                         </div>
 
                         <!-- AI Visual Concepts -->
@@ -118,28 +116,28 @@ export async function POST(req: Request) {
                             </div>
                         </div>
                     </div>
-                    
+
                     <div style="background: #f4f4f4; padding: 16px; text-align: center; font-size: 11px; color: #999;">
                         © ${new Date().getFullYear()} SherCorp. Generated by SherCorpBot. | <a href="https://khawarsher.com" style="color:#39FF14;">khawarsher.com</a>
                     </div>
                 </div>
             </body>
-            </html>
-        `;
+            </html>`;
 
-        await resend.emails.send({
+        const sendResult = await resend.emails.send({
             from: 'SherCorp Bot <contact@khawarsher.com>',
             to: email,
             bcc: 'khawaralisher@gmail.com',
             subject: 'Your AI-Generated Digital Strategy — SherCorp',
             html: emailHtml,
-            attachments: attachments
+            attachments,
         });
 
+        console.log('Strategy email sent:', sendResult);
         return NextResponse.json({ success: true });
 
     } catch (error) {
-        console.error('Email sending Error:', error);
+        console.error('[send-strategy] Email sending failed:', error);
         return NextResponse.json({ error: 'Failed to send strategy email.' }, { status: 500 });
     }
 }
