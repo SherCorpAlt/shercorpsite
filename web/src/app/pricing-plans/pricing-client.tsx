@@ -1,12 +1,42 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { Check } from "lucide-react";
+import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { Check, ChevronDown, Sparkles, Bot, Palette } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import Image from "next/image";
+
+const faqs = [
+  {
+    question: "What's the difference between AI Design and AI + Creative Design packages?",
+    answer:
+      "Our AI Design packages are fully powered by SherCorp's intelligent content engine. The AI researches your market, builds the strategy, and produces ready-to-publish posts and reels at speed and scale — the most cost-effective way to stay consistently active online. AI + Creative Design packages layer in our senior human designers, strategists, and editors who art-direct, refine, and add the original storytelling that machines alone can't. You get the speed of AI plus the nuance and craft of an experienced creative team.",
+  },
+  {
+    question: "Will the content actually match my brand, or look generic?",
+    answer:
+      "Every engagement begins with a brand discovery step where we capture your tone, audience, products, and goals. Our AI is guided by that brand profile, so the output is tailored — not generic. On AI + Creative Design packages, human designers do a final pass on every asset to guarantee your brand voice and visual identity are spot-on before anything goes live.",
+  },
+  {
+    question: "How quickly will I start seeing content and results?",
+    answer:
+      "Once onboarding is complete, your content calendar and first batch of designs are typically ready within a few business days — far faster than a traditional agency. Reach and engagement usually begin improving within the first 4 to 6 weeks of consistent posting, while measurable lead and sales impact builds over the first quarter as the strategy compounds.",
+  },
+  {
+    question: "Which package is right for my business?",
+    answer:
+      "If you need to stay consistently present across platforms on a lean budget, an AI Design package is the perfect starting point. If you're an established or scaling brand that needs premium, highly differentiated creative, custom video edits, and a dedicated strategist, the AI + Creative Design packages are the better fit. Not sure? Talk to Mehak or our team and we'll recommend the right plan — no pressure.",
+  },
+  {
+    question: "Can I upgrade, downgrade, or cancel later?",
+    answer:
+      "Yes. All plans are flexible and billed monthly. You can move from an AI Design plan to an AI + Creative Design plan (or change tiers) as your needs grow, and you're never locked into a long-term contract. We believe in earning your business every month through results.",
+  },
+];
 
 const aiDesignPackages = [
   {
@@ -137,23 +167,95 @@ export default function PricingClient() {
   return (
     <div className="min-h-screen bg-slate-950 pt-32 pb-24 selection:bg-amber-500/30 selection:text-amber-200">
       <div className="container mx-auto px-4 md:px-6 max-w-7xl">
-        {/* Header Section */}
-        <div className="text-center max-w-3xl mx-auto mb-16 md:mb-24">
-          <motion.h1
+        {/* Hero Section - Mehak (Business Development Manager) */}
+        <div className="relative grid lg:grid-cols-2 gap-10 lg:gap-16 items-center mb-20 md:mb-28">
+          {/* Copy */}
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
+            className="order-2 lg:order-1 text-center lg:text-left"
+          >
+            <Badge
+              variant="outline"
+              className="mb-5 inline-flex items-center gap-2 border-amber-500/40 bg-amber-500/10 text-amber-300 px-4 py-1.5 font-medium"
+            >
+              <span className="size-2 rounded-full bg-emerald-400 animate-pulse" />
+              Your AI Strategy Partner
+            </Badge>
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white leading-tight mb-5">
+              Welcome to SherCorp — I&apos;m Mehak, your strategy development partner
+            </h1>
+            <p className="text-lg text-slate-300 leading-relaxed mb-8 max-w-xl mx-auto lg:mx-0">
+              At SherCorp, we fuse cutting-edge artificial intelligence with real human creativity to deliver
+              content and digital marketing solutions that actually move the needle. From data-driven strategy and
+              ready-to-publish designs to full-scale campaign management, I&apos;m here to keep your brand consistent,
+              relevant, and ahead of the competition — without the overhead of a traditional agency.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+              <Button
+                asChild
+                size="lg"
+                className="font-semibold bg-gradient-to-r from-amber-500 to-amber-600 text-amber-950 hover:from-amber-400 hover:to-amber-500 border-0"
+              >
+                <Link href="/shercorpbot">Get Your Free Strategy</Link>
+              </Button>
+              <Button
+                asChild
+                size="lg"
+                variant="outline"
+                className="font-semibold bg-slate-800/50 text-white border-slate-700 hover:bg-slate-800 hover:text-white"
+              >
+                <Link href="/contact">Talk to Our Team</Link>
+              </Button>
+            </div>
+          </motion.div>
+
+          {/* Image */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="order-1 lg:order-2 flex justify-center"
+          >
+            <div className="relative">
+              <div className="absolute -inset-6 bg-gradient-to-tr from-amber-500/20 via-blue-500/10 to-indigo-500/20 blur-3xl rounded-full" />
+              <div className="relative aspect-square w-64 sm:w-80 lg:w-[26rem] rounded-3xl overflow-hidden shadow-2xl ring-1 ring-white/10">
+                <Image
+                  src="/images/mehak-bdm.jpeg"
+                  alt="Mehak — AI Business Development Manager at SherCorp"
+                  fill
+                  priority
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 20rem, 26rem"
+                />
+              </div>
+              <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 bg-slate-900/90 backdrop-blur-xl border border-slate-700/60 px-5 py-2 rounded-full shadow-lg whitespace-nowrap">
+                <span className="text-sm font-semibold text-amber-400">Mehak</span>
+                <span className="text-sm text-slate-400"> · Business Development Manager</span>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Packages Intro */}
+        <div className="text-center max-w-3xl mx-auto mb-16 md:mb-20">
+          <motion.h2
             initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-white mb-4"
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight text-white mb-4"
           >
             SherCorp Packages
-          </motion.h1>
+          </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
             className="text-xl text-slate-400 font-medium"
           >
-            Choose your growth tier
+            Choose your growth tier — pure AI speed, or AI supercharged with human creativity.
           </motion.p>
         </div>
 
@@ -163,10 +265,23 @@ export default function PricingClient() {
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="flex items-center gap-4 mb-10"
+            className="mb-10"
           >
-            <h2 className="text-2xl md:text-3xl font-bold text-white">AI Design Packages</h2>
-            <div className="h-[1px] flex-1 bg-slate-800" />
+            <div className="flex items-center gap-4 mb-4">
+              <div className="flex items-center gap-3">
+                <span className="grid place-items-center size-10 rounded-xl bg-blue-500/10 text-blue-400">
+                  <Bot className="size-5" />
+                </span>
+                <h2 className="text-2xl md:text-3xl font-bold text-white">AI Design Packages</h2>
+              </div>
+              <div className="h-[1px] flex-1 bg-slate-800" />
+            </div>
+            <p className="text-slate-400 max-w-3xl leading-relaxed">
+              Fully powered by our intelligent content engine — speed, scale, and consistency at the most
+              accessible price point. The AI handles research, strategy, and ready-to-publish posts and reels so
+              your brand shows up every day across platforms. Perfect for startups, founders, and growing businesses
+              that want to stay visible without stretching the budget.
+            </p>
           </motion.div>
 
           <motion.div
@@ -188,10 +303,23 @@ export default function PricingClient() {
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="flex items-center gap-4 mb-10"
+            className="mb-10"
           >
-            <h2 className="text-2xl md:text-3xl font-bold text-white">AI + Creative Design Packages</h2>
-            <div className="h-[1px] flex-1 bg-slate-800" />
+            <div className="flex items-center gap-4 mb-4">
+              <div className="flex items-center gap-3">
+                <span className="grid place-items-center size-10 rounded-xl bg-amber-500/10 text-amber-400">
+                  <Palette className="size-5" />
+                </span>
+                <h2 className="text-2xl md:text-3xl font-bold text-white">AI + Creative Design Packages</h2>
+              </div>
+              <div className="h-[1px] flex-1 bg-slate-800" />
+            </div>
+            <p className="text-slate-400 max-w-3xl leading-relaxed">
+              The best of both worlds. Everything in our AI Design plans, elevated by senior human designers,
+              strategists, and editors who art-direct, refine, and add the original storytelling machines can&apos;t.
+              Built for established and scaling brands that demand premium, on-brand creative, custom video edits,
+              and a dedicated team guiding every campaign.
+            </p>
           </motion.div>
 
           <motion.div
@@ -206,6 +334,63 @@ export default function PricingClient() {
             ))}
           </motion.div>
         </div>
+
+        {/* Video Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          className="max-w-4xl mx-auto text-center mb-24"
+        >
+          <Badge
+            variant="outline"
+            className="mb-5 inline-flex items-center gap-2 border-amber-500/40 bg-amber-500/10 text-amber-300 px-4 py-1.5 font-medium"
+          >
+            <Sparkles className="size-3.5" />
+            See It In Action
+          </Badge>
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">How SherCorp Powers Your Growth</h2>
+          <p className="text-lg text-slate-400 leading-relaxed mb-10 max-w-2xl mx-auto">
+            Watch a quick walkthrough of how our AI and creative teams turn your brand goals into consistent,
+            high-performing content and campaigns.
+          </p>
+          <div className="relative w-full overflow-hidden rounded-2xl shadow-2xl ring-1 ring-slate-800/60 aspect-video bg-slate-900">
+            <iframe
+              className="absolute inset-0 size-full"
+              src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+              title="SherCorp — AI Powered Content & Digital Marketing"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+            />
+          </div>
+          <p className="text-xs text-slate-600 mt-3">Placeholder video — replace with your SherCorp intro reel.</p>
+        </motion.div>
+
+        {/* FAQ Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          className="max-w-3xl mx-auto mb-24"
+        >
+          <div className="text-center mb-10">
+            <Badge
+              variant="outline"
+              className="mb-5 inline-flex items-center gap-2 border-blue-500/40 bg-blue-500/10 text-blue-300 px-4 py-1.5 font-medium"
+            >
+              FAQs
+            </Badge>
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Frequently Asked Questions</h2>
+            <p className="text-lg text-slate-400">
+              Everything you need to know about our AI Design and AI + Creative Design packages.
+            </p>
+          </div>
+          <div className="space-y-4">
+            {faqs.map((faq, index) => (
+              <FaqItem key={index} faq={faq} />
+            ))}
+          </div>
+        </motion.div>
 
         {/* Disclaimer Section */}
         <motion.div
@@ -298,5 +483,41 @@ function PricingCard({ pkg, rowLabel }: { pkg: PricingPackage; rowLabel: string 
         </CardFooter>
       </Card>
     </motion.div>
+  );
+}
+
+function FaqItem({ faq }: { faq: { question: string; answer: string } }) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div className="rounded-xl border border-slate-800/60 bg-slate-900/40 overflow-hidden transition-colors hover:border-slate-700/80">
+      <button
+        type="button"
+        onClick={() => setOpen((prev) => !prev)}
+        aria-expanded={open}
+        className="flex w-full items-center justify-between gap-4 px-6 py-5 text-left"
+      >
+        <span className="text-base md:text-lg font-semibold text-white">{faq.question}</span>
+        <ChevronDown
+          className={cn(
+            "size-5 shrink-0 text-amber-400 transition-transform duration-300",
+            open && "rotate-180"
+          )}
+        />
+      </button>
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.25, ease: "easeInOut" }}
+            className="overflow-hidden"
+          >
+            <p className="px-6 pb-5 text-slate-400 leading-relaxed">{faq.answer}</p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 }
