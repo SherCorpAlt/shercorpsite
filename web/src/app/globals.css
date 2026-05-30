@@ -200,3 +200,8 @@
   margin-inline: auto !important;
   padding-inline: 0 !important;
 }
+
+/* Hide scrollbar for horizontal scroll carousels */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}

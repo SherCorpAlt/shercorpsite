@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Check, ChevronDown, Sparkles, Bot, Palette } from "lucide-react";
+import { Check, ChevronDown, ChevronLeft, ChevronRight, Sparkles, Bot, Palette } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -284,12 +284,16 @@ export default function PricingClient() {
             </p>
           </motion.div>
 
+          {/* Mobile horizontal scroll */}
+          <MobilePackageScroller packages={aiDesignPackages} rowLabel="AI Design" accentColor="blue" />
+
+          {/* Desktop grid */}
           <motion.div
             variants={containerVariants}
             initial="hidden"
             whileInView="show"
             viewport={{ once: true, margin: "-50px" }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-8"
+            className="hidden md:grid md:grid-cols-3 gap-8"
           >
             {aiDesignPackages.map((pkg, index) => (
               <PricingCard key={index} pkg={pkg} rowLabel="AI Design" />
@@ -299,35 +303,60 @@ export default function PricingClient() {
 
         {/* AI + Creative Design Packages */}
         <div className="mb-16">
+          {/* Section header with image background */}
           <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="mb-10"
+            className="relative mb-10 rounded-2xl overflow-hidden"
           >
-            <div className="flex items-center gap-4 mb-4">
-              <div className="flex items-center gap-3">
-                <span className="grid place-items-center size-10 rounded-xl bg-amber-500/10 text-amber-400">
-                  <Palette className="size-5" />
-                </span>
-                <h2 className="text-2xl md:text-3xl font-bold text-white">AI + Creative Design Packages</h2>
+            {/* Background image */}
+            <Image
+              src="/images/creative-design-packages-bg.webp"
+              alt=""
+              fill
+              className="object-cover object-center"
+              sizes="(max-width: 768px) 100vw, 1200px"
+            />
+
+            {/* Diffuse gradient overlays */}
+            <div className="absolute inset-0 bg-gradient-to-r from-black/10 via-slate-950/55 to-slate-950" />
+            <div className="absolute inset-0 bg-gradient-to-b from-slate-950/25 via-transparent to-slate-950/85" />
+
+            {/* Grid layout: left spacer shows image, right holds text */}
+            <div className="relative z-10 grid lg:grid-cols-2 min-h-[200px] lg:min-h-[260px]">
+              {/* Left column: intentionally empty to expose the image */}
+              <div className="h-28 lg:h-auto" />
+
+              {/* Right column: heading + description */}
+              <div className="px-6 pb-8 pt-2 lg:py-10 lg:pr-10 flex flex-col justify-center">
+                <div className="flex items-center gap-3 mb-4 flex-wrap">
+                  <span className="grid place-items-center size-10 rounded-xl bg-amber-500/20 text-amber-400 backdrop-blur-sm border border-amber-500/30 shrink-0">
+                    <Palette className="size-5" />
+                  </span>
+                  <h2 className="text-2xl md:text-3xl font-bold text-white">AI + Creative Design Packages</h2>
+                  <div className="hidden lg:block h-[1px] flex-1 bg-white/10" />
+                </div>
+                <p className="text-slate-200 leading-relaxed text-sm md:text-base">
+                  The best of both worlds. Everything in our AI Design plans, elevated by senior human designers,
+                  strategists, and editors who art-direct, refine, and add the original storytelling machines can&apos;t.
+                  Built for established and scaling brands that demand premium, on-brand creative, custom video edits,
+                  and a dedicated team guiding every campaign.
+                </p>
               </div>
-              <div className="h-[1px] flex-1 bg-slate-800" />
             </div>
-            <p className="text-slate-400 max-w-3xl leading-relaxed">
-              The best of both worlds. Everything in our AI Design plans, elevated by senior human designers,
-              strategists, and editors who art-direct, refine, and add the original storytelling machines can&apos;t.
-              Built for established and scaling brands that demand premium, on-brand creative, custom video edits,
-              and a dedicated team guiding every campaign.
-            </p>
           </motion.div>
 
+          {/* Mobile horizontal scroll */}
+          <MobilePackageScroller packages={creativePackages} rowLabel="AI + Creative" accentColor="amber" />
+
+          {/* Desktop grid */}
           <motion.div
             variants={containerVariants}
             initial="hidden"
             whileInView="show"
             viewport={{ once: true, margin: "-50px" }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-8"
+            className="hidden md:grid md:grid-cols-3 gap-8"
           >
             {creativePackages.map((pkg, index) => (
               <PricingCard key={index} pkg={pkg} rowLabel="AI + Creative" />
@@ -418,9 +447,100 @@ interface PricingPackage {
   isPro: boolean;
 }
 
+function MobilePackageScroller({
+  packages,
+  rowLabel,
+  accentColor,
+}: {
+  packages: PricingPackage[];
+  rowLabel: string;
+  accentColor: "blue" | "amber";
+}) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [currentIdx, setCurrentIdx] = useState(0);
+
+  const scrollToCard = (idx: number) => {
+    const clamped = Math.max(0, Math.min(packages.length - 1, idx));
+    const container = scrollRef.current;
+    if (!container) return;
+    const card = container.children[clamped] as HTMLElement;
+    if (card) {
+      container.scrollTo({ left: card.offsetLeft, behavior: "smooth" });
+    }
+    setCurrentIdx(clamped);
+  };
+
+  const handleScroll = () => {
+    const container = scrollRef.current;
+    if (!container) return;
+    const cardWidth = container.scrollWidth / packages.length;
+    const newIdx = Math.round(container.scrollLeft / cardWidth);
+    setCurrentIdx(Math.max(0, Math.min(packages.length - 1, newIdx)));
+  };
+
+  const dotActive = accentColor === "amber" ? "bg-amber-400" : "bg-blue-400";
+
+  return (
+    <div className="md:hidden mb-2">
+      {/* Scrollable strip */}
+      <div
+        ref={scrollRef}
+        onScroll={handleScroll}
+        className="flex overflow-x-auto gap-4 pb-1 snap-x snap-mandatory hide-scrollbar"
+        style={{ scrollbarWidth: "none" } as React.CSSProperties}
+      >
+        {packages.map((pkg, index) => (
+          <div key={index} className="w-[calc(100%-1.5rem)] flex-shrink-0 snap-start flex">
+            <PricingCard pkg={pkg} rowLabel={rowLabel} />
+          </div>
+        ))}
+      </div>
+
+      {/* Navigation row */}
+      <div className="flex items-center justify-between mt-5 px-1">
+        <button
+          type="button"
+          onClick={() => scrollToCard(currentIdx - 1)}
+          disabled={currentIdx === 0}
+          aria-label="Previous package"
+          className="flex items-center justify-center size-10 rounded-full bg-slate-800/80 border border-slate-700/60 text-slate-300 disabled:opacity-30 hover:bg-slate-700 active:bg-slate-600 transition-colors"
+        >
+          <ChevronLeft className="size-5" />
+        </button>
+
+        {/* Dot indicators */}
+        <div className="flex items-center gap-2">
+          {packages.map((_, i) => (
+            <button
+              key={i}
+              type="button"
+              onClick={() => scrollToCard(i)}
+              aria-label={`View ${packages[i].tier} package`}
+              className={cn(
+                "rounded-full transition-all duration-300 focus:outline-none",
+                i === currentIdx ? `w-6 h-2 ${dotActive}` : "w-2 h-2 bg-slate-600 hover:bg-slate-500"
+              )}
+            />
+          ))}
+        </div>
+
+        <button
+          type="button"
+          onClick={() => scrollToCard(currentIdx + 1)}
+          disabled={currentIdx === packages.length - 1}
+          aria-label="Next package"
+          className="flex items-center justify-center size-10 rounded-full bg-slate-800/80 border border-slate-700/60 text-slate-300 disabled:opacity-30 hover:bg-slate-700 active:bg-slate-600 transition-colors"
+        >
+          <ChevronRight className="size-5" />
+        </button>
+      </div>
+    </div>
+  );
+}
+
 function PricingCard({ pkg, rowLabel }: { pkg: PricingPackage; rowLabel: string }) {
   return (
-    <motion.div variants={itemVariants} className="flex h-full">
+    <motion.div variants={itemVariants} className="flex h-full w-full">
       <Card
         className={cn(
           "relative flex flex-col w-full bg-slate-900/50 backdrop-blur-xl border-slate-800/60 transition-all duration-300 hover:-translate-y-2 group overflow-hidden",
@@ -473,8 +593,8 @@ function PricingCard({ pkg, rowLabel }: { pkg: PricingPackage; rowLabel: string 
             variant={pkg.isPro ? "default" : "outline"}
             className={cn(
               "w-full font-semibold transition-all group-hover:scale-[1.02]",
-              pkg.isPro 
-                ? "bg-gradient-to-r from-amber-500 to-amber-600 text-amber-950 hover:from-amber-400 hover:to-amber-500 border-0" 
+              pkg.isPro
+                ? "bg-gradient-to-r from-amber-500 to-amber-600 text-amber-950 hover:from-amber-400 hover:to-amber-500 border-0"
                 : "bg-slate-800/50 text-white border-slate-700 hover:bg-slate-800 hover:text-white"
             )}
           >
