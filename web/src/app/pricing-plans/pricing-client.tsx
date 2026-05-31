@@ -301,67 +301,59 @@ export default function PricingClient() {
           </motion.div>
         </div>
 
-        {/* AI + Creative Design Packages */}
-        <div className="mb-16">
-          {/* Section header with image background */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="relative mb-10 rounded-2xl overflow-hidden"
-          >
-            {/* Background image */}
-            <Image
-              src="/images/creative-design-packages-bg.webp"
-              alt=""
-              fill
-              className="object-cover object-center"
-              sizes="(max-width: 768px) 100vw, 1200px"
-            />
+        {/* AI + Creative Design Packages — image covers the entire section */}
+        <div className="relative mb-16 rounded-2xl overflow-hidden">
+          {/* Full-section background image — object-right surfaces the creative right portion */}
+          <Image
+            src="/images/creative-design-packages-bg.webp"
+            alt=""
+            fill
+            className="object-cover object-right"
+            sizes="(max-width: 768px) 100vw, 1200px"
+          />
+          {/* Left-to-right gradient: opaque on left (text readable), fades out on right (image visible) */}
+          <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/85 to-slate-950/20" />
+          {/* Top/bottom vignette for depth */}
+          <div className="absolute inset-0 bg-gradient-to-b from-slate-950/50 via-transparent to-slate-950/50" />
 
-            {/* Diffuse gradient overlays */}
-            <div className="absolute inset-0 bg-gradient-to-r from-black/10 via-slate-950/55 to-slate-950" />
-            <div className="absolute inset-0 bg-gradient-to-b from-slate-950/25 via-transparent to-slate-950/85" />
-
-            {/* Grid layout: left spacer shows image, right holds text */}
-            <div className="relative z-10 grid lg:grid-cols-2 min-h-[200px] lg:min-h-[260px]">
-              {/* Left column: intentionally empty to expose the image */}
-              <div className="h-28 lg:h-auto" />
-
-              {/* Right column: heading + description */}
-              <div className="px-6 pb-8 pt-2 lg:py-10 lg:pr-10 flex flex-col justify-center">
-                <div className="flex items-center gap-3 mb-4 flex-wrap">
-                  <span className="grid place-items-center size-10 rounded-xl bg-amber-500/20 text-amber-400 backdrop-blur-sm border border-amber-500/30 shrink-0">
-                    <Palette className="size-5" />
-                  </span>
-                  <h2 className="text-2xl md:text-3xl font-bold text-white">AI + Creative Design Packages</h2>
-                  <div className="hidden lg:block h-[1px] flex-1 bg-white/10" />
-                </div>
-                <p className="text-slate-200 leading-relaxed text-sm md:text-base">
-                  The best of both worlds. Everything in our AI Design plans, elevated by senior human designers,
-                  strategists, and editors who art-direct, refine, and add the original storytelling machines can&apos;t.
-                  Built for established and scaling brands that demand premium, on-brand creative, custom video edits,
-                  and a dedicated team guiding every campaign.
-                </p>
+          <div className="relative z-10 p-6 md:p-8 lg:p-10">
+            {/* Header — left-aligned; lg:max-w-[55%] keeps text on left so right image area shows */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="mb-10 lg:max-w-[55%]"
+            >
+              <div className="flex items-center gap-3 mb-4 flex-wrap">
+                <span className="grid place-items-center size-10 rounded-xl bg-amber-500/20 text-amber-400 backdrop-blur-sm border border-amber-500/30 shrink-0">
+                  <Palette className="size-5" />
+                </span>
+                <h2 className="text-2xl md:text-3xl font-bold text-white">AI + Creative Design Packages</h2>
               </div>
-            </div>
-          </motion.div>
+              <p className="text-slate-200 leading-relaxed text-sm md:text-base">
+                The best of both worlds. Everything in our AI Design plans, elevated by senior human designers,
+                strategists, and editors who art-direct, refine, and add the original storytelling machines can&apos;t.
+                Built for established and scaling brands that demand premium, on-brand creative, custom video edits,
+                and a dedicated team guiding every campaign.
+              </p>
+            </motion.div>
 
-          {/* Mobile horizontal scroll */}
-          <MobilePackageScroller packages={creativePackages} rowLabel="AI + Creative" accentColor="amber" />
+            {/* Mobile horizontal scroll — cards sit above the image; backdrop-blur shows image blurred behind each card */}
+            <MobilePackageScroller packages={creativePackages} rowLabel="AI + Creative" accentColor="amber" />
 
-          {/* Desktop grid */}
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true, margin: "-50px" }}
-            className="hidden md:grid md:grid-cols-3 gap-8"
-          >
-            {creativePackages.map((pkg, index) => (
-              <PricingCard key={index} pkg={pkg} rowLabel="AI + Creative" />
-            ))}
-          </motion.div>
+            {/* Desktop grid — backdrop-blur-xl on each card blurs the image visible behind it */}
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true, margin: "-50px" }}
+              className="hidden md:grid md:grid-cols-3 gap-8"
+            >
+              {creativePackages.map((pkg, index) => (
+                <PricingCard key={index} pkg={pkg} rowLabel="AI + Creative" />
+              ))}
+            </motion.div>
+          </div>
         </div>
 
         {/* Video Section */}
