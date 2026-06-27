@@ -41,7 +41,7 @@ const faqs = [
 const aiDesignPackages = [
   {
     tier: "Starter",
-    price: "Rs. 25,000",
+    price: "Rs. 50,000",
     period: "/month",
     tagline: "Launch smart. Stay consistent.",
     features: [
@@ -57,7 +57,7 @@ const aiDesignPackages = [
   },
   {
     tier: "Pro",
-    price: "Rs. 35,000",
+    price: "Rs. 75,000",
     period: "/month",
     tagline: "Go further. Reach more.",
     features: [
@@ -74,7 +74,7 @@ const aiDesignPackages = [
   },
   {
     tier: "Brand",
-    price: "Rs. 50,000",
+    price: "Rs. 115,000",
     period: "/month",
     tagline: "Own your category.",
     features: [
@@ -95,7 +95,7 @@ const aiDesignPackages = [
 const creativePackages = [
   {
     tier: "Starter",
-    price: "Rs. 35,000",
+    price: "Rs. 75,000",
     period: "/month",
     tagline: "AI power, human touch.",
     features: [
@@ -111,7 +111,7 @@ const creativePackages = [
   },
   {
     tier: "Pro",
-    price: "Rs. 50,000",
+    price: "Rs. 125,000",
     period: "/month",
     tagline: "Strategy. Craft. Performance.",
     features: [
@@ -129,7 +129,7 @@ const creativePackages = [
   },
   {
     tier: "Brand",
-    price: "Rs. 70,000",
+    price: "Rs. 150,000",
     period: "/month",
     tagline: "Full-scale brand dominance.",
     features: [
@@ -378,7 +378,7 @@ export default function PricingClient() {
           <div className="relative w-full overflow-hidden rounded-2xl shadow-2xl ring-1 ring-slate-800/60 aspect-video bg-slate-900">
             <iframe
               className="absolute inset-0 size-full"
-              src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+              src="https://www.youtube.com/embed/zNC3VQvia4A"
               title="SherCorp — AI Powered Content & Digital Marketing"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               allowFullScreen
